@@ -3,15 +3,14 @@
     <option name="ALTERNATIVE_JRE_PATH" value="corretto-21" />
     <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
     <envs>
-      <env name="ENV_PROTUBE_DB_PWD" value="secret" />
       <env name="ENV_PROTUBE_DB" value="protube-dev" />
+      <env name="ENV_PROTUBE_DB_PWD" value="secret" />
       <env name="ENV_PROTUBE_DB_USER" value="root" />
-      <env name="ENV_PROTUBE_STORE_DIR" value="~/code/test-videos" />
+      <env name="ENV_PROTUBE_STORE_DIR" value="C:\Users\BcnLive\Desktop\Tecnocampus\Tecnocampus\5è Curs\1r Trim\Laboratori del Software\videos-10\videos-10/" />
     </envs>
     <option name="MAIN_CLASS_NAME" value="com.tecnocampus.LS2.protube_back.ProtubeBackApplication" />
     <module name="protube-back" />
     <option name="PROGRAM_PARAMETERS" value="main -Dspring.profiles.active=dev" />
-    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <method v="2">
       <option name="Make" enabled="true" />
     </method>

@@ -26,6 +26,8 @@ public class AppStartupRunner implements ApplicationRunner {
         final var rootDir = env.getProperty("pro_tube.store.dir");
         this.rootPath = Paths.get(rootDir);
         loadInitialData = env.getProperty("pro_tube.load_initial_data", Boolean.class);
+
+        // A function that obtains every video .json and stores the video
     }
 
     @Override
