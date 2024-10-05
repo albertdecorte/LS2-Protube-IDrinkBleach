@@ -1,4 +1,4 @@
-package com.tecnocampus.LS2.protube_back.api;
+package com.tecnocampus.LS2.protube_back.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,4 +1,4 @@
-package com.tecnocampus.LS2.protube_back.application.services;
+package com.tecnocampus.LS2.protube_back.services;
 
 import org.springframework.stereotype.Service;
 import java.util.List;
