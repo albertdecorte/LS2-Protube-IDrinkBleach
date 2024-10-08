@@ -9,4 +9,12 @@ public class User {
     @Id
     String gmail;
     String password;
+
+    public User(String userName, String gmail, String password) {
+        this.userName = userName;
+        this.gmail = gmail;
+        this.password = password;
+    }
+
+    public User() {}
 }
