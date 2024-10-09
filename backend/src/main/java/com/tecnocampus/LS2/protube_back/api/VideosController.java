@@ -24,4 +24,14 @@ public class VideosController {
     public List<VideoDTO> getAllVideos() {
         return videoService.getAllVideos();
     }
+
+    @GetMapping("/generate-thumbnails")
+    public String generateThumbnails() {
+        try {
+            List<String> generatedThumbnails = videoService.generateAllThumbnails();
+            return "Generated thumbnails for: " + generatedThumbnails;
+        } catch (Exception e) {
+            return "Error generating thumbnails: " + e.getMessage();
+        }
+    }
 }

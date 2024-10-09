@@ -16,6 +16,7 @@ public class Video {
     private String user;
     private Meta meta;
     private String videoPath;
+    //"C:\Users\decor\Desktop\videos-10\0.mp4"
 
     @JsonCreator
     public Video(
@@ -33,6 +34,8 @@ public class Video {
         this.title = title;
         this.user = user;
         this.meta = meta;
+        this.videoPath = "C:/Users/decor/Desktop/videos-10/" + id + ".mp4";
+        // TODO SI dona problemes repassar el .toString()
     }
 
     // Getters and Setters
@@ -90,6 +93,14 @@ public class Video {
 
     public void setMeta(Meta meta) {
         this.meta = meta;
+    }
+
+    public String getVideoPath() {
+        return this.videoPath;
+    }
+
+    public void setVideoPath(String videoPath) {
+        this.videoPath = videoPath;
     }
 
 
