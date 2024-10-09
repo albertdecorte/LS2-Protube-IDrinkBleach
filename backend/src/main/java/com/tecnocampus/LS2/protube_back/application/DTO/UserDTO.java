@@ -7,4 +7,6 @@ public class UserDTO {
     @Id
     String gmailDTO;
     String passwordDTO;
+
+    //hello
 }
