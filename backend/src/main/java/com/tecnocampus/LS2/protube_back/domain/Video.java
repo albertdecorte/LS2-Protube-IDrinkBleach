@@ -16,7 +16,8 @@ public class Video {
     private String user;
     private Meta meta;
     private String videoPath;
-    //"C:\Users\decor\Desktop\videos-10\0.mp4"
+    private String imagePath;
+
 
     @JsonCreator
     public Video(
@@ -101,6 +102,14 @@ public class Video {
 
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
 
