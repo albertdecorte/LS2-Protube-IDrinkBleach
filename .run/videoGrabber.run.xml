@@ -1,20 +1,19 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="videoGrabber" type="PythonConfigurationType" factoryName="Python">
     <module name="LS2-protube" />
-    <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
     </envs>
-    <option name="SDK_HOME" value="" />
+    <option name="SDK_HOME" value="C:\Python312\python.exe" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tooling/videoGrabber" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
     <option name="ADD_SOURCE_ROOTS" value="true" />
     <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
     <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tooling/videoGrabber/main.py" />
-    <option name="PARAMETERS" value="--store=$PROJECT_DIR$/../test-videos-2/ --id=10 --recreate --videos=$PROJECT_DIR$/resources/video_list.txt" />
+    <option name="PARAMETERS" value="--store=$PROJECT_DIR$/../test-videos-2/ --id=10 --recreate --videos=$PROJECT_DIR$/../LS2-protube/resources/video_list.txt" />
     <option name="SHOW_COMMAND_LINE" value="false" />
     <option name="EMULATE_TERMINAL" value="false" />
     <option name="MODULE_MODE" value="false" />
