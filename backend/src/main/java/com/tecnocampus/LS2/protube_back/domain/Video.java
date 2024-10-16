@@ -36,7 +36,7 @@ public class Video {
         this.user = user;
         this.meta = meta;
         this.videoPath = "C:/Users/decor/Desktop/videos-10/" + id + ".mp4";
-        // TODO SI dona problemes repassar el .toString()
+        this.imagePath = "";
     }
 
     // Getters and Setters

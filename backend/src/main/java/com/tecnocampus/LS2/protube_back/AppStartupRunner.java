@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -28,6 +29,7 @@ public class AppStartupRunner implements ApplicationRunner {
     // Feel free to adapt them to your needs
     private final Environment env;
     private final Path rootPath;
+    //private final ResourceLoader resourceLoader;
     private final Boolean loadInitialData;
 
     public AppStartupRunner(VideoService videoService, Environment env) {
@@ -37,7 +39,6 @@ public class AppStartupRunner implements ApplicationRunner {
         this.rootPath = Paths.get(rootDir);
         this.loadInitialData = env.getProperty("pro_tube.load_initial_data", Boolean.class);
 
-        // A function that obtains every video .json and stores the video
     }
 
     @Override
@@ -49,22 +50,59 @@ public class AppStartupRunner implements ApplicationRunner {
     }
 
     private void loadInitialData() {
-        try (Stream<Path> paths = Files.walk(rootPath)) {
-            paths.filter(Files::isRegularFile)
-                    .filter(path -> path.toString().endsWith(".json"))
-                    .forEach(this::processFile);
+        try {
+            loadVideoData();
+            loadThumbnailData();
         } catch (IOException e) {
             LOG.error("Failed to load initial data", e);
         }
     }
 
-    private void processFile(Path path) {
+    private void loadVideoData() throws IOException {
+        try (Stream<Path> paths = Files.walk(rootPath)) {
+            paths.filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith(".json"))
+                    .forEach(this::processVideoFile);
+        }
+    }
+
+    private void loadThumbnailData() throws IOException {
+        try (Stream<Path> paths = Files.walk(rootPath)) {
+            paths.filter(Files::isRegularFile)
+                    .filter(path -> path.toString().endsWith(".webp"))
+                    .forEach(this::processThumbnailFile);
+        }
+    }
+
+    private void processVideoFile(Path path) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Video video = objectMapper.readValue(path.toFile(), Video.class);
             videoService.saveVideo(video);
+            LOG.info("Loaded video: " + video.getTitle());
         } catch (IOException e) {
-            LOG.error("Failed to process file: " + path, e);
+            LOG.error("Failed to process video file: " + path, e);
         }
+    }
+
+    private void processThumbnailFile(Path path) {
+        String filename = path.getFileName().toString();
+        String videoIdStr = filename.replace(".webp", "");
+        try {
+            Long videoId = Long.parseLong(videoIdStr);
+            Video video = videoService.findById(videoId);
+            if (video != null) {
+                video.setImagePath(path.toString());
+                videoService.saveVideo(video);
+                LOG.info("Loaded thumbnail for video ID " + videoId + ": " + path);
+            } else {
+                LOG.warn("No video found for thumbnail ID: " + videoId);
+            }
+        } catch (NumberFormatException e) {
+            LOG.error("Invalid video ID in thumbnail filename: " + filename, e);
+        } catch (Exception e) {
+            LOG.error("Failed to process thumbnail file: " + path, e);
+        }
+
     }
 }
