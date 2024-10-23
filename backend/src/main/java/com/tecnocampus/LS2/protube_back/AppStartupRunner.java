@@ -3,6 +3,7 @@ package com.tecnocampus.LS2.protube_back;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tecnocampus.LS2.protube_back.application.services.VideoService;
 import com.tecnocampus.LS2.protube_back.domain.Video;
+import com.tecnocampus.LS2.protube_back.persistance.VideoRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
@@ -23,7 +24,7 @@ public class AppStartupRunner implements ApplicationRunner {
             LoggerFactory.getLogger(AppStartupRunner.class);
 
 
-    private final VideoService videoService;
+    private final VideoRepository videoRepository;
 
     // Example variables from our implementation. 
     // Feel free to adapt them to your needs
@@ -32,10 +33,10 @@ public class AppStartupRunner implements ApplicationRunner {
     //private final ResourceLoader resourceLoader;
     private final Boolean loadInitialData;
 
-    public AppStartupRunner(VideoService videoService, Environment env) {
-        this.videoService = videoService;
+    public AppStartupRunner(VideoRepository videoRepository, Environment env) {
+        this.videoRepository = videoRepository;
         this.env = env;
-        final var rootDir = env.getProperty("pro_tube.store.dir", "C:/Users/decor/Desktop/videos-10");
+        final var rootDir = env.getProperty("pro_tube.store.dir");
         this.rootPath = Paths.get(rootDir);
         this.loadInitialData = env.getProperty("pro_tube.load_initial_data", Boolean.class);
 
@@ -78,7 +79,7 @@ public class AppStartupRunner implements ApplicationRunner {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Video video = objectMapper.readValue(path.toFile(), Video.class);
-            videoService.saveVideo(video);
+            videoRepository.save(video);
             LOG.info("Loaded video: " + video.getTitle());
         } catch (IOException e) {
             LOG.error("Failed to process video file: " + path, e);
@@ -90,10 +91,12 @@ public class AppStartupRunner implements ApplicationRunner {
         String videoIdStr = filename.replace(".webp", "");
         try {
             Long videoId = Long.parseLong(videoIdStr);
-            Video video = videoService.findById(videoId);
+            Video video = videoRepository.findById(videoId);
             if (video != null) {
-                video.setImagePath(path.toString());
-                videoService.saveVideo(video);
+                String correctPath = "http://localhost:8080/media/" + videoId + ".webp";
+                video.setImagePath(correctPath);
+
+                videoRepository.save(video);
                 LOG.info("Loaded thumbnail for video ID " + videoId + ": " + path);
             } else {
                 LOG.warn("No video found for thumbnail ID: " + videoId);

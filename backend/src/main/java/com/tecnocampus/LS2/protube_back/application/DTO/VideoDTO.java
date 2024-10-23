@@ -1,11 +1,6 @@
 package com.tecnocampus.LS2.protube_back.application.DTO;
 
 import com.tecnocampus.LS2.protube_back.domain.Video;
-
-import javax.xml.stream.events.Comment;
-import java.util.ArrayList;
-import java.util.List;
-
 import java.util.List;
 
 public class VideoDTO {
@@ -18,10 +13,13 @@ public class VideoDTO {
     private String description;
     private List<String> categories;
     private List<String> tags;
+    private String videoPath;
+    private String imagePath;
 
     public VideoDTO(Long id, int width, int height, double duration,
                     String title, String user, String description,
-                    List<String> categories, List<String> tags) {
+                    List<String> categories, List<String> tags,
+                    String videoPath, String imagePath) {  // Add imagePath to the constructor
         this.id = id;
         this.width = width;
         this.height = height;
@@ -31,6 +29,22 @@ public class VideoDTO {
         this.description = description;
         this.categories = categories;
         this.tags = tags;
+        this.videoPath = videoPath;
+        this.imagePath = imagePath;
+    }
+
+    public VideoDTO(Video video) {
+        this.id = video.getId();
+        this.width = video.getWidth();
+        this.height = video.getHeight();
+        this.duration = video.getDuration();
+        this.title = video.getTitle();
+        this.user = video.getUser();
+        this.description = video.getMeta().getDescription();
+        this.categories = video.getMeta().getCategories();
+        this.tags = video.getMeta().getTags();
+        this.videoPath = video.getVideoPath();
+        this.imagePath = video.getImagePath();
     }
 
     public VideoDTO() {}
@@ -62,4 +76,15 @@ public class VideoDTO {
 
     public List<String> getTags() { return tags; }
     public void setTags(List<String> tags) { this.tags = tags; }
+
+    public String getImagePath() { return imagePath; }
+    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
+
+    public String getVideoPath() {
+        return videoPath;
+    }
+
+    public void setVideoPath(String videoPath) {
+        this.videoPath = videoPath;
+    }
 }

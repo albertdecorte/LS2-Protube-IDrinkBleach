@@ -16,7 +16,26 @@
             const videoList = document.getElementById('video-list');
             data.forEach(video => {
                 const li = document.createElement('li');
-                li.textContent = `${video.title} by ${video.user}`;
+
+                // Create an image element for the thumbnail
+                const img = document.createElement('img');
+                img.src = video.imagePath;
+                img.alt = video.title;
+                img.style.width = '100px'; // Adjust size as needed
+                img.style.height = '100px'; // Adjust size as needed
+
+                // Add the video title and path information
+                const title = document.createElement('span');
+                title.textContent = `${video.title} by ${video.user}`;
+
+                const videoLink = document.createElement('a');
+                videoLink.href = video.path || '#'; // Use '#' if path is not available
+                videoLink.target = "_blank"; // Open in new tab
+                videoLink.textContent = " Watch Video";
+
+                li.appendChild(img);
+                li.appendChild(title);
+                li.appendChild(videoLink);
                 videoList.appendChild(li);
             });
         })

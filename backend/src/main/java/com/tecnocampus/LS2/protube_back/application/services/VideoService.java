@@ -40,15 +40,9 @@ public class VideoService {
         videoDTO.setDescription(video.getMeta().getDescription());
         videoDTO.setCategories(video.getMeta().getCategories());
         videoDTO.setTags(video.getMeta().getTags());
+        videoDTO.setVideoPath(video.getVideoPath());
+        videoDTO.setImagePath(video.getImagePath());
         return videoDTO;
     }
-
-    public Video findById(Long id) {
-        return videoRepository.findAll().stream()
-                .filter(video -> video.getId().equals(id))
-                .findFirst()
-                .orElse(null);
-    }
-
 }
 

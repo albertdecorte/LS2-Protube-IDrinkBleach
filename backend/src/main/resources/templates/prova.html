@@ -32,8 +32,8 @@
     const videos = Array.from({ length: 44 }, (_, i) => ({
         id: i + 1,
         title: `Video ${i + 1}`,
-        path: `http://localhost:8080/videos-10/${i}.mp4`,
-        thumbnail: `http://localhost:8080/media/${i}.jpg` // Assuming thumbnails are named sequentially
+        videoPath: `http://localhost:8080/videos-10/${i}.mp4`,
+        imagePath: `http://localhost:8080/videos-10/${i}.webp` // Assuming thumbnails are named sequentially
     }));
 
     // Function to create buttons with images

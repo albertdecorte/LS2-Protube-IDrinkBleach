@@ -16,6 +16,7 @@ public class Video {
     private String user;
     private Meta meta;
     private String videoPath;
+    @JsonProperty("image")
     private String imagePath;
 
 
@@ -36,7 +37,7 @@ public class Video {
         this.user = user;
         this.meta = meta;
         this.videoPath = "C:/Users/decor/Desktop/videos-10/" + id + ".mp4";
-        this.imagePath = "";
+        this.imagePath = "http://localhost:8080/media/" + id + ".webp";
     }
 
     // Getters and Setters

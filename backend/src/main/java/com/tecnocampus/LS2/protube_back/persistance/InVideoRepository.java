@@ -19,4 +19,12 @@ public class InVideoRepository implements VideoRepository {
     public List<Video> findAll() {
         return new ArrayList<>(videos);
     }
+
+    @Override
+    public Video findById(Long id) {
+        return videos.stream()
+                .filter(video -> video.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
 }
