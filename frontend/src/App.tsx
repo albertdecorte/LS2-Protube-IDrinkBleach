@@ -1,7 +1,7 @@
-import logo from './assets/logo.svg';
 import './App.css';
 import { Auth0Provider } from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
+import Finallogo from './assets/Finallogo.svg';
 
 // Substitueix aquests valors amb els teus
 const domain = "dev-r7hj507hsi3jn34i.us.auth0.com";
@@ -30,7 +30,7 @@ const AuthButtons = () => {
 };
 
 function App() {
-  return (
+    return (
       <Auth0Provider
           domain={domain}
           clientId={clientId}
@@ -40,7 +40,7 @@ function App() {
       >
         <div className="App">
           <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
+            <img src={Finallogo} className="App-logo" alt="logo" />
             <p>
               Edit <code>src/App.tsx</code> and save to reload.
             </p>
