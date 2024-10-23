@@ -20,6 +20,7 @@ public class VideoDTO {
                     String title, String user, String description,
                     List<String> categories, List<String> tags,
                     String videoPath, String imagePath) {  // Add imagePath to the constructor
+
         this.id = id;
         this.width = width;
         this.height = height;
@@ -78,13 +79,14 @@ public class VideoDTO {
     public void setTags(List<String> tags) { this.tags = tags; }
 
     public String getImagePath() { return imagePath; }
+
     public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 
     public String getVideoPath() {
         return videoPath;
     }
 
-    public void setVideoPath(String videoPath) {
-        this.videoPath = videoPath;
+    public void setVideoPath(String videoPath){
+            this.videoPath = videoPath;
     }
 }

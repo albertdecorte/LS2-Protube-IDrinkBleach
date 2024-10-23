@@ -19,7 +19,6 @@ public class Video {
     @JsonProperty("image")
     private String imagePath;
 
-
     @JsonCreator
     public Video(
             @JsonProperty("id") Long id,
