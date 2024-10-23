@@ -26,7 +26,7 @@ public class AppStartupRunner implements ApplicationRunner {
 
     private final VideoRepository videoRepository;
 
-    // Example variables from our implementation.
+    // Example variables from our implementation. 
     // Feel free to adapt them to your needs
     private final Environment env;
     private final Path rootPath;
