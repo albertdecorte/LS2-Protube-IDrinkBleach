@@ -1,16 +1,5 @@
 Subject: [PATCH] Add testing coverage to project
 ---
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-@SpringBootTest({
-		"pro_tube.store.dir=c:",
-		"pro_tube.load_initial_data=false"
-})
-class ProtubeBackVideoJsonTests {
-
-	@Test
 
 Index: .github/workflows/main.yml
 IDEA additional info:

@@ -10,7 +10,7 @@
 <ul id="video-list"></ul>
 
 <script>
-    fetch('/videos')
+    fetch('/api/videos')
         .then(response => response.json())
         .then(data => {
             const videoList = document.getElementById('video-list');
