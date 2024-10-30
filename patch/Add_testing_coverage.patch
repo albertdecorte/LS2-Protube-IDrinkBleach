@@ -1,0 +1,373 @@
+Subject: [PATCH] Add testing coverage to project
+---
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+@SpringBootTest({
+		"pro_tube.store.dir=c:",
+		"pro_tube.load_initial_data=false"
+})
+class ProtubeBackVideoJsonTests {
+
+	@Test
+
+Index: .github/workflows/main.yml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.github/workflows/main.yml b/.github/workflows/main.yml
+new file mode 100644
+--- /dev/null	(revision cdba931980c24452ca32b98e8ef202706adcb323)
++++ b/.github/workflows/main.yml	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -0,0 +1,49 @@
++name: Pull Request CI
++
++on:
++  pull_request:
++    branches:
++      - main
++
++jobs:
++  build-and-test:
++    runs-on: ubuntu-latest
++
++    steps:
++      - name: Checkout code
++        uses: actions/checkout@v2
++
++      - name: Set up Node.js for frontend
++        uses: actions/setup-node@v2
++        with:
++          node-version: '20'
++
++      - name: Install frontend dependencies
++        working-directory: frontend
++        run: npm install
++
++      - name: Build frontend
++        working-directory: frontend
++        run: npm run build
++
++      - name: Set up Java for backend
++        uses: actions/setup-java@v2
++        with:
++          distribution: 'zulu'
++          java-version: '21'
++
++      - name: Install Maven Wrapper
++        working-directory: backend
++        run: mvn -N io.takari:maven:wrapper
++
++      - name: Build backend
++        working-directory: backend
++        run: ./mvnw clean install -Dmaven.test.skip
++
++      - name: Run frontend tests
++        working-directory: frontend
++        run: npm test
++
++      - name: Run backend tests
++        working-directory: backend
++        run: ./mvnw test
+Index: backend/pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/pom.xml b/backend/pom.xml
+--- a/backend/pom.xml	(revision 49ae53a6ae8800c7229624a61c115f18d525b338)
++++ b/backend/pom.xml	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -131,8 +131,16 @@
+ 				<groupId>nz.net.ultraq.thymeleaf</groupId>
+ 				<artifactId>thymeleaf-layout-dialect</artifactId>
+ 			</dependency>
+-
+-
++        <dependency>
++            <groupId>org.jacoco</groupId>
++            <artifactId>jacoco-maven-plugin</artifactId>
++            <version>0.8.12</version>
++        </dependency>
++        <dependency>
++            <groupId>org.jacoco</groupId>
++            <artifactId>jacoco-maven-plugin</artifactId>
++            <version>0.8.12</version>
++        </dependency>
+ 	</dependencies>
+ 
+ 	<profiles>
+@@ -230,6 +238,72 @@
+ 			</properties>
+ 		</profile>
+ 	</profiles>
+-
+-
++	<build>
++		<plugins>
++			<plugin>
++				<groupId>org.jacoco</groupId>
++				<artifactId>jacoco-maven-plugin</artifactId>
++				<version>0.8.12</version>
++				<configuration>
++					<excludes>com/tecnocampus/LS2/protube_back/ProtubeBackApplication*</excludes>
++				</configuration>
++				<executions>
++					<execution>
++						<id>default-prepare-agent</id>
++						<goals>
++							<goal>prepare-agent</goal>
++						</goals>
++					</execution>
++					<execution>
++						<id>default-report</id>
++						<phase>test</phase>
++						<goals>
++							<goal>report</goal>
++						</goals>
++					</execution>
++					<execution>
++						<id>default-check</id>
++						<phase>test</phase>
++						<goals>
++							<goal>check</goal>
++						</goals>
++						<configuration>
++							<rules>
++								<rule>
++									<element>CLASS</element>
++									<limits>
++										<limit>
++											<counter>LINE</counter>
++											<value>COVEREDRATIO</value>
++											<minimum>0.50</minimum>
++										</limit>
++									</limits>
++								</rule>
++								<rule>
++									<element>BUNDLE</element>
++									<limits>
++										<limit>
++											<counter>INSTRUCTION</counter>
++											<value>COVEREDRATIO</value>
++											<minimum>0.75</minimum>
++										</limit>
++										<limit>
++											<counter>LINE</counter>
++											<value>COVEREDRATIO</value>
++											<minimum>0.75</minimum>
++										</limit>
++										<limit>
++											<counter>METHOD</counter>
++											<value>COVEREDRATIO</value>
++											<minimum>0.75</minimum>
++										</limit>
++									</limits>
++								</rule>
++							</rules>
++						</configuration>
++					</execution>
++				</executions>
++			</plugin>
++		</plugins>
++	</build>
+ </project>
+\ No newline at end of file
+Index: backend/src/test/java/com/tecnocampus/LS2/protube_back/ProtubeBackVideoJsonTests.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/src/test/java/com/tecnocampus/LS2/protube_back/ProtubeBackVideoJsonTests.java b/backend/src/test/java/com/tecnocampus/LS2/protube_back/ProtubeBackVideoJsonTests.java
+--- a/backend/src/test/java/com/tecnocampus/LS2/protube_back/ProtubeBackVideoJsonTests.java	(revision 49ae53a6ae8800c7229624a61c115f18d525b338)
++++ b/backend/src/test/java/com/tecnocampus/LS2/protube_back/ProtubeBackVideoJsonTests.java	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -3,7 +3,10 @@
+ import org.junit.jupiter.api.Test;
+ import org.springframework.boot.test.context.SpringBootTest;
+ 
+-@SpringBootTest
++@SpringBootTest({
++		"pro_tube.store.dir=c:",
++		"pro_tube.load_initial_data=false"
++})
+ class ProtubeBackVideoJsonTests {
+ 
+ 	@Test
+Index: frontend/.gitignore
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/.gitignore b/frontend/.gitignore
+--- a/frontend/.gitignore	(revision 49ae53a6ae8800c7229624a61c115f18d525b338)
++++ b/frontend/.gitignore	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -11,6 +11,7 @@
+ dist
+ dist-ssr
+ *.local
++coverage
+ 
+ # Editor directories and files
+ .vscode/*
+Index: frontend/jest.config.ts
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/jest.config.ts b/frontend/jest.config.ts
+--- a/frontend/jest.config.ts	(revision 49ae53a6ae8800c7229624a61c115f18d525b338)
++++ b/frontend/jest.config.ts	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -5,7 +5,15 @@
+   setupFiles: ["<rootDir>/jest.polyfills.js"],
+   testEnvironmentOptions: {
+     customExportConditions: [''],
+-  }
++  },
++coverageThreshold: {
++global: {
++branches: 75,
++functions: 75,
++lines: 75,
++statements: 75,
++},
++},
+ };
+ 
+ export default config;
+Index: frontend/package.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/package.json b/frontend/package.json
+--- a/frontend/package.json	(revision 49ae53a6ae8800c7229624a61c115f18d525b338)
++++ b/frontend/package.json	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -8,7 +8,7 @@
+     "build": "tsc -b && vite build",
+     "lint": "eslint .",
+     "preview": "vite preview",
+-    "test": "jest"
++    "test": "jest --collectCoverage=true  --collectCoverageFrom='src/**/*.{ts,tsx}'"
+   },
+   "dependencies": {
+     "axios": "^1.7.5",
+Index: frontend/tsconfig.app.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/tsconfig.app.json b/frontend/tsconfig.app.json
+--- a/frontend/tsconfig.app.json	(revision 49ae53a6ae8800c7229624a61c115f18d525b338)
++++ b/frontend/tsconfig.app.json	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -2,10 +2,13 @@
+   "compilerOptions": {
+     "target": "ES2020",
+     "useDefineForClassFields": true,
+-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
++    "lib": [
++      "ES2020",
++      "DOM",
++      "DOM.Iterable"
++    ],
+     "module": "ESNext",
+     "skipLibCheck": true,
+-
+     /* Bundler mode */
+     "moduleResolution": "bundler",
+     "allowImportingTsExtensions": true,
+@@ -13,12 +16,18 @@
+     "moduleDetection": "force",
+     "noEmit": true,
+     "jsx": "react-jsx",
+-
+     /* Linting */
+     "strict": true,
+     "noUnusedLocals": true,
+     "noUnusedParameters": true,
+-    "noFallthroughCasesInSwitch": true
++    "noFallthroughCasesInSwitch": true,
++    "types": [
++      "node",
++      "jest",
++      "@testing-library/jest-dom"
++    ]
+   },
+-  "include": ["src"]
++  "include": [
++    "src"
++  ]
+ }
+Index: frontend/tsconfig.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/tsconfig.json b/frontend/tsconfig.json
+--- a/frontend/tsconfig.json	(revision 49ae53a6ae8800c7229624a61c115f18d525b338)
++++ b/frontend/tsconfig.json	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -1,7 +1,18 @@
+ {
+   "files": [],
+   "references": [
+-    { "path": "./tsconfig.app.json" },
+-    { "path": "./tsconfig.node.json" }
+-  ]
++    {
++      "path": "./tsconfig.app.json"
++    },
++    {
++      "path": "./tsconfig.node.json"
++    }
++  ],
++  "compilerOptions": {
++    "types": [
++      "node",
++      "jest",
++      "@testing-library/jest-dom"
++    ]
++  }
+ }
+Index: frontend/tsconfig.node.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/frontend/tsconfig.node.json b/frontend/tsconfig.node.json
+--- a/frontend/tsconfig.node.json	(revision 49ae53a6ae8800c7229624a61c115f18d525b338)
++++ b/frontend/tsconfig.node.json	(revision cdba931980c24452ca32b98e8ef202706adcb323)
+@@ -1,22 +1,29 @@
+ {
+   "compilerOptions": {
+     "target": "ES2022",
+-    "lib": ["ES2023"],
++    "lib": [
++      "ES2023"
++    ],
+     "module": "ESNext",
+     "skipLibCheck": true,
+-
+     /* Bundler mode */
+     "moduleResolution": "bundler",
+     "allowImportingTsExtensions": true,
+     "isolatedModules": true,
+     "moduleDetection": "force",
+     "noEmit": true,
+-
+     /* Linting */
+     "strict": true,
+     "noUnusedLocals": true,
+     "noUnusedParameters": true,
+-    "noFallthroughCasesInSwitch": true
++    "noFallthroughCasesInSwitch": true,
++    "types": [
++      "node",
++      "jest",
++      "@testing-library/jest-dom"
++    ]
+   },
+-  "include": ["vite.config.ts"]
++  "include": [
++    "vite.config.ts"
++  ]
+ }
