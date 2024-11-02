@@ -26,7 +26,6 @@ const VideoList: React.FC = () => {
                 return response.json();
             })
             .then(data => {
-                // Store the full JSON data in the videos state
                 setVideos(data);
             })
             .catch(error => setError(error.message));
@@ -38,8 +37,8 @@ const VideoList: React.FC = () => {
             {error && <p>Error: {error}</p>}
             <ul className="video-grid">
                 {videos.map(video => (
-                    <a href={video.path} key={video.id} target="_blank" rel="noopener noreferrer">
-                        <li className="video-item">
+                    <li key={video.id} className="video-item">
+                        <a href={video.path} target="_blank" rel="noopener noreferrer" style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
                             <img
                                 src={video.imagePath}
                                 alt={video.title}
@@ -49,8 +48,8 @@ const VideoList: React.FC = () => {
                                 <span className="video-title">{video.title}</span>
                                 <span className="video-user">{video.user}</span>
                             </div>
-                        </li>
-                    </a>
+                        </a>
+                    </li>
                 ))}
             </ul>
         </div>
