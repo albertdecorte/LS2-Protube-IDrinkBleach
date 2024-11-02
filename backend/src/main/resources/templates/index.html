@@ -11,26 +11,31 @@
 
 <script>
     fetch('/api/videos')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.json();
+        })
         .then(data => {
             const videoList = document.getElementById('video-list');
             data.forEach(video => {
                 const li = document.createElement('li');
 
-                // Create an image element for the thumbnail
+                // Crear un elemento de imagen para la miniatura
                 const img = document.createElement('img');
-                img.src = video.imagePath;
+                img.src = video.imagePath;  // Asegúrate de que imagePath esté definido
                 img.alt = video.title;
-                img.style.width = '100px'; // Adjust size as needed
-                img.style.height = '100px'; // Adjust size as needed
+                img.style.width = '100px'; // Ajusta el tamaño según sea necesario
+                img.style.height = '100px'; // Ajusta el tamaño según sea necesario
 
-                // Add the video title and path information
+                // Agregar el título del video y la información de la ruta
                 const title = document.createElement('span');
                 title.textContent = `${video.title} by ${video.user}`;
 
                 const videoLink = document.createElement('a');
-                videoLink.href = video.path || '#'; // Use '#' if path is not available
-                videoLink.target = "_blank"; // Open in new tab
+                videoLink.href = video.path || '#'; // Usa '#' si no hay ruta disponible
+                videoLink.target = "_blank"; // Abrir en nueva pestaña
                 videoLink.textContent = " Watch Video";
 
                 li.appendChild(img);

@@ -3,6 +3,8 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import Finallogo from './assets/Finallogo.svg';
 import Button from "./Button";
+import "./VideoList"
+import VideoList from "./VideoList";
 
 // This is your entry point
 // Feel free to modify ANYTHING in this file
@@ -55,6 +57,7 @@ function App() {
                     </a>
                     <AuthButtons /> {/* Afegim el component de login/logout */}
                     <Button />
+                    <VideoList />
                 </header>
             </div>
         </Auth0Provider>

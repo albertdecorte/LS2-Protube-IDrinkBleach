@@ -1,5 +1,5 @@
 function nextPage() {
-    window.location.href = 'http://localhost:8080/api/videos';
+    window.location.href = 'VideoList.css';
 }
 
 const Button = () => {

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import './VideoList.css';
 
 interface Video {
     id: number;
@@ -6,6 +7,12 @@ interface Video {
     user: string;
     path: string;
     imagePath: string;
+    width?: number;
+    height?: number;
+    duration?: number;
+    description?: string;
+    categories?: string[];
+    tags?: string[];
 }
 
 const VideoList: React.FC = () => {
@@ -18,29 +25,32 @@ const VideoList: React.FC = () => {
                 if (!response.ok) throw new Error('Failed to fetch videos');
                 return response.json();
             })
-            .then(data => setVideos(data))
+            .then(data => {
+                // Store the full JSON data in the videos state
+                setVideos(data);
+            })
             .catch(error => setError(error.message));
     }, []);
 
     return (
-        <div>
+        <div className="video-list-container">
             <h1>Video List</h1>
             {error && <p>Error: {error}</p>}
-            <ul>
+            <ul className="video-grid">
                 {videos.map(video => (
-                    <li key={video.id}>
-                        {/* Thumbnail Image */}
+                    <li key={video.id} className="video-item">
                         <img
                             src={video.imagePath}
                             alt={video.title}
-                            style={{ width: '100px', height: '100px' }}
+                            className="thumbnail"
                         />
-                        {/* Title and User Information */}
-                        <span>{`${video.title} by ${video.user}`}</span>
-                        {/* Video Link */}
-                        <a href={video.path || '#'} target="_blank" rel="noopener noreferrer">
-                            Watch Video
-                        </a>
+                        <div className="video-info">
+                            <span className="video-title">{video.title}</span>
+                            <span className="video-user">by {video.user}</span>
+                            <a href={video.path} target="_blank" rel="noopener noreferrer">
+                                Watch Video
+                            </a>
+                        </div>
                     </li>
                 ))}
             </ul>
@@ -49,4 +59,3 @@ const VideoList: React.FC = () => {
 };
 
 export default VideoList;
-

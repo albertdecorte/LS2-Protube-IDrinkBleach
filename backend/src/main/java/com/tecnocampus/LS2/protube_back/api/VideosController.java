@@ -1,9 +1,12 @@
 package com.tecnocampus.LS2.protube_back.api;
 
+import com.tecnocampus.LS2.protube_back.AppStartupRunner;
+import com.tecnocampus.LS2.protube_back.ProtubeBackApplication;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.application.services.VideoService;
-import com.tecnocampus.LS2.protube_back.domain.Video;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,14 +17,24 @@ import java.util.List;
 @RequestMapping("/api/videos")
 public class VideosController {
     private final VideoService videoService;
+    private final AppStartupRunner appStartupRunner;
 
     @Autowired
-    public VideosController(VideoService videoService) {
+    public VideosController(VideoService videoService, AppStartupRunner appStartupRunner) {
         this.videoService = videoService;
+        this.appStartupRunner = appStartupRunner;
+    }
+
+    @GetMapping("/Json")
+    public List<VideoDTO> getAllVideos() {
+        return videoService.getAllVideos();
     }
 
     @GetMapping
-    public List<VideoDTO> getAllVideos() {
-        return videoService.getAllVideos();
+    public ResponseEntity<List<VideoDTO>> loadInitialData() {
+        appStartupRunner.loadData();  // Cargar los datos
+        List<VideoDTO> videos = videoService.getAllVideos(); // Obtener todos los videos
+        return ResponseEntity.ok(videos);  // Devolver los videos
+
     }
 }
