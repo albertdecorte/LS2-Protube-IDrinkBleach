@@ -38,20 +38,19 @@ const VideoList: React.FC = () => {
             {error && <p>Error: {error}</p>}
             <ul className="video-grid">
                 {videos.map(video => (
-                    <li key={video.id} className="video-item">
-                        <img
-                            src={video.imagePath}
-                            alt={video.title}
-                            className="thumbnail"
-                        />
-                        <div className="video-info">
-                            <span className="video-title">{video.title}</span>
-                            <span className="video-user">by {video.user}</span>
-                            <a href={video.path} target="_blank" rel="noopener noreferrer">
-                                Watch Video
-                            </a>
-                        </div>
-                    </li>
+                    <a href={video.path} key={video.id} target="_blank" rel="noopener noreferrer">
+                        <li className="video-item">
+                            <img
+                                src={video.imagePath}
+                                alt={video.title}
+                                className="thumbnail"
+                            />
+                            <div className="video-info">
+                                <span className="video-title">{video.title}</span>
+                                <span className="video-user">{video.user}</span>
+                            </div>
+                        </li>
+                    </a>
                 ))}
             </ul>
         </div>
