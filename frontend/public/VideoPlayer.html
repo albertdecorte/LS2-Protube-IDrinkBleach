@@ -1,0 +1,37 @@
+<!-- video-player.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <link rel="stylesheet" href="VideoPlayer.css">
+</head>
+<body>
+<div id="video-player-container">
+    <h1 id="video-title"></h1>
+    <p id="video-user"></p>
+    <video id="video-element" controls width="100%"></video>
+</div>
+
+<script>
+    // Get the video ID from the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoId = urlParams.get('id');
+
+    // Fetch video data based on the ID
+    fetch(`http://localhost:8080/api/videos/${videoId}`)
+        .then(response => response.json())
+        .then(video => {
+            document.getElementById('video-title').textContent = video.title;
+            document.getElementById('video-user').textContent = video.user;
+            const videoElement = document.getElementById('video-element');
+            videoElement.src = video.path;  // Set the video source path
+        })
+        .catch(error => {
+            console.error('Failed to load video:', error);
+            document.getElementById('video-title').textContent = 'Error loading video';
+        });
+</script>
+</body>
+</html>

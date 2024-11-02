@@ -1,3 +1,4 @@
+// VideoList.tsx
 import React, { useEffect, useState } from 'react';
 import './VideoList.css';
 
@@ -7,12 +8,6 @@ interface Video {
     user: string;
     path: string;
     imagePath: string;
-    width?: number;
-    height?: number;
-    duration?: number;
-    description?: string;
-    categories?: string[];
-    tags?: string[];
 }
 
 const VideoList: React.FC = () => {
@@ -25,11 +20,13 @@ const VideoList: React.FC = () => {
                 if (!response.ok) throw new Error('Failed to fetch videos');
                 return response.json();
             })
-            .then(data => {
-                setVideos(data);
-            })
+            .then(data => setVideos(data))
             .catch(error => setError(error.message));
     }, []);
+
+    const goToVideoPlayer = (id: number) => {
+        window.location.href = `/video-player.html?id=${id}`;
+    };
 
     return (
         <div className="video-list-container">
@@ -37,18 +34,17 @@ const VideoList: React.FC = () => {
             {error && <p>Error: {error}</p>}
             <ul className="video-grid">
                 {videos.map(video => (
-                    <li key={video.id} className="video-item">
-                        <a href={video.path} target="_blank" rel="noopener noreferrer" style={{ display: 'block', textDecoration: 'none', color: 'inherit' }}>
-                            <img
-                                src={video.imagePath}
-                                alt={video.title}
-                                className="thumbnail"
-                            />
-                            <div className="video-info">
-                                <span className="video-title">{video.title}</span>
-                                <span className="video-user">{video.user}</span>
-                            </div>
-                        </a>
+                    <li
+                        key={video.id}
+                        className="video-item"
+                        onClick={() => goToVideoPlayer(video.id)}
+                        style={{ cursor: 'pointer' }}  // Make items look clickable
+                    >
+                        <img src={video.imagePath} alt={video.title} className="thumbnail" />
+                        <div className="video-info">
+                            <span className="video-title">{video.title}</span>
+                            <span className="video-user">{video.user}</span>
+                        </div>
                     </li>
                 ))}
             </ul>
