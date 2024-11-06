@@ -4,10 +4,12 @@ import com.tecnocampus.LS2.protube_back.AppStartupRunner;
 import com.tecnocampus.LS2.protube_back.ProtubeBackApplication;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.application.services.VideoService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +30,11 @@ public class VideosController {
     @GetMapping("/Json")
     public List<VideoDTO> getAllVideos() {
         return videoService.getAllVideos();
+    }
+
+    @GetMapping("/{id}")
+    public VideoDTO getVideoById(@PathVariable Long id) {
+        return videoService.getVideoById(id);
     }
 
     @GetMapping

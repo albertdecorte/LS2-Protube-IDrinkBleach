@@ -36,7 +36,7 @@ public class Video {
         this.title = title;
         this.user = user;
         this.meta = meta;
-        this.videoPath = "C:/Users/decor/Desktop/videos-10/" + id + ".mp4";
+        this.videoPath = "http://localhost:8080/media/" + id + ".mp4";
         this.imagePath = "http://localhost:8080/media/" + id + ".webp";
     }
 

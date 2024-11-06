@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import './VideoPlayer.css';
 
 interface Video {
     id: number;
@@ -16,7 +17,6 @@ const VideoPlayer: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        // Fetch video data by ID from the backend
         fetch(`http://localhost:8080/api/videos/${id}`)
             .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch video');
@@ -38,12 +38,13 @@ const VideoPlayer: React.FC = () => {
     if (!video) return <p>Video not found.</p>;
 
     return (
-        <div>
-            <h1>{video.title}</h1>
-            <p>{video.user}</p>
-            <video controls src={video.path} width="600"></video>
+        <div id="video-player-container">
+            <h1 id="video-title">{video.title}</h1>
+            <p id="video-user">{video.user}</p>
+            <video controls src={video.path}></video>
         </div>
     );
 };
 
 export default VideoPlayer;
+

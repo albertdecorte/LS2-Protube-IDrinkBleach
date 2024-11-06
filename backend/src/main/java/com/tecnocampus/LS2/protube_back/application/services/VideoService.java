@@ -44,5 +44,11 @@ public class VideoService {
         videoDTO.setImagePath(video.getImagePath());
         return videoDTO;
     }
+
+    public VideoDTO getVideoById(Long id) {
+        Video video = videoRepository.findById(id);
+        VideoDTO videoDTO = convertToDTO(video);
+        return videoDTO;
+    }
 }
 
