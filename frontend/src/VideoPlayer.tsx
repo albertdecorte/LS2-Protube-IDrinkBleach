@@ -41,7 +41,9 @@ const VideoPlayer: React.FC = () => {
         <div id="video-player-container">
             <h1 id="video-title">{video.title}</h1>
             <p id="video-user">{video.user}</p>
-            <video controls src={video.path}></video>
+            <video controls>
+                <source src={video.path} type="video/mp4" />
+                </video>
         </div>
     );
 };
