@@ -6,7 +6,7 @@ interface Video {
     id: number;
     title: string;
     user: string;
-    path: string;
+    videoPath: string;
     imagePath: string;
 }
 
@@ -42,7 +42,7 @@ const VideoPlayer: React.FC = () => {
             <h1 id="video-title">{video.title}</h1>
             <p id="video-user">{video.user}</p>
             <video controls>
-                <source src={video.path} type="video/mp4" />
+                <source src={video.videoPath} type="video/mp4" />
                 </video>
         </div>
     );
