@@ -1,43 +1,47 @@
-// VideoPlayer.tsx
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import './VideoPLayer.css';
 
 interface Video {
     id: number;
     title: string;
-    path: string;
     user: string;
+    path: string;
+    imagePath: string;
 }
 
 const VideoPlayer: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [video, setVideo] = useState<Video | null>(null);
+    const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        // Fetch video data by ID from the backend
         fetch(`http://localhost:8080/api/videos/${id}`)
             .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch video');
                 return response.json();
             })
-            .then(data => setVideo(data))
-            .catch(error => setError(error.message));
+            .then(data => {
+                setVideo(data);
+                setLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching video:', error);
+                setError(error.message);
+                setLoading(false);
+            });
     }, [id]);
 
-    if (error) {
-        return <p>Error: {error}</p>;
-    }
-
-    if (!video) {
-        return <p>Loading...</p>;
-    }
+    if (loading) return <p>Loading video...</p>;
+    if (error) return <p>Error loading video: {error}</p>;
+    if (!video) return <p>Video not found.</p>;
 
     return (
-        <div className="video-player-container">
+        <div>
             <h1>{video.title}</h1>
-            <p>Uploaded by {video.user}</p>
-            <video controls src={video.path} width="100%" />
+            <p>{video.user}</p>
+            <video controls src={video.path} width="600"></video>
         </div>
     );
 };

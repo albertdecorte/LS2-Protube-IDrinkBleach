@@ -3,15 +3,14 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import { useAuth0 } from '@auth0/auth0-react';
 import Finallogo from './assets/Finallogo.svg';
 import Button from "./Button";
-import "./VideoList"
 import VideoList from "./VideoList";
+import VideoPlayer from './VideoPlayer';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-// This is your entry point
-// Feel free to modify ANYTHING in this file
 const domain = "dev-r7hj507hsi3jn34i.us.auth0.com";
 const clientId = "g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ";
 
-// Component per mostrar botons de Login/Logout
+// Component to show login/logout buttons
 const AuthButtons = () => {
     const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
     return (
@@ -19,7 +18,6 @@ const AuthButtons = () => {
             {!isAuthenticated && (
                 <button onClick={() => loginWithRedirect()}>Login</button>
             )}
-
             {isAuthenticated && (
                 <>
                     <button onClick={() => logout({ returnTo: window.location.origin } as any)}>
@@ -41,25 +39,21 @@ function App() {
                 redirect_uri: window.location.origin
             }}
         >
-            <div className="App">
-                <header className="App-header">
-                    <img src={Finallogo} className="App-logo" alt="logo" />
-                    <p>
-                        Edit <code>src/App.tsx</code> and save to reload.
-                    </p>
-                    <a
-                        className="App-link"
-                        href="https://reactjs.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Learn React
-                    </a>
-                    <AuthButtons /> {/* Afegim el component de login/logout */}
-                    <Button />
-                    <VideoList />
-                </header>
-            </div>
+            <Router>
+                <div className="App">
+                    <header className="App-header">
+                        <img src={Finallogo} className="App-logo" alt="logo" />
+                        <AuthButtons />
+                        <Routes>
+                            {/* Main video list route */}
+                            <Route path="/" element={<VideoList />} />
+                            {/* Video player route with dynamic ID */}
+                            <Route path="/videos/:id" element={<VideoPlayer />} />
+                        </Routes>
+                        <Button />
+                    </header>
+                </div>
+            </Router>
         </Auth0Provider>
     );
 }
