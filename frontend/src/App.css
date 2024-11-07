@@ -1,39 +1,82 @@
 .App {
-    text-align: center;
-  }
-  
+  text-align: center;
+}
+
+.App-logo {
+  height: 13vmin; /* Decrease the logo size */
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
   .App-logo {
-    height: 40vmin;
-    pointer-events: none;
+    animation: App-logo-spin infinite 20s linear;
   }
-  
-  @media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-      animation: App-logo-spin infinite 20s linear;
-    }
+}
+
+.App-header {
+  background-color: #16181c;
+  min-height: 25vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(15px + 2vmin);
+  color: rgb(255, 255, 255);
+  padding: 10px;
+  position: relative; /* To position the button */
+  width: 100%; /* Ensure it takes full width */
+  box-sizing: border-box;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  flex: 0;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+}
+/* Diagonal lines */
+.App:before,
+.App:after,
+.diagonal-line {
+  content: "";
+  position: absolute;
+  width: 3px;
+  height: 200%;
+  background-color: red;
+  top: -50%;
+  z-index: 1;
+}
+
+.App:before {
+  transform: rotate(45deg);
+  left: 10%;
+}
+
+.App:after {
+  transform: rotate(45deg);
+  left: 30%;
+}
+
+.diagonal-line {
+  transform: rotate(45deg);
+  left: 50%;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
   }
-  
-  .App-header {
-    background-color: #16181c;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: rgb(255, 255, 255);
+  to {
+    transform: rotate(360deg);
   }
-  
-  .App-link {
-    color: #61dafb;
-  }
-  
-  @keyframes App-logo-spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
+}
   

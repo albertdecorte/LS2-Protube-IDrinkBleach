@@ -1,18 +1,16 @@
 import './App.css';
-import { Auth0Provider } from '@auth0/auth0-react';
-import { useAuth0 } from '@auth0/auth0-react';
+import {Auth0Provider, useAuth0} from '@auth0/auth0-react';
 import Finallogo from './assets/Finallogo.svg';
-import Button from "./Button";
 import VideoList from "./VideoList";
 import VideoPlayer from './VideoPlayer';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 
 const domain = "dev-r7hj507hsi3jn34i.us.auth0.com";
 const clientId = "g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ";
 
 // Component to show login/logout buttons
 const AuthButtons = () => {
-    const { loginWithRedirect, logout, isAuthenticated } = useAuth0();
+    const {loginWithRedirect, logout, isAuthenticated} = useAuth0();
     return (
         <div>
             {!isAuthenticated && (
@@ -20,7 +18,7 @@ const AuthButtons = () => {
             )}
             {isAuthenticated && (
                 <>
-                    <button onClick={() => logout({ returnTo: window.location.origin } as any)}>
+                    <button onClick={() => logout({returnTo: window.location.origin} as any)}>
                         Logout
                     </button>
                     <p>Has iniciat sessió correctament!</p>
@@ -42,16 +40,21 @@ function App() {
             <Router>
                 <div className="App">
                     <header className="App-header">
-                        <img src={Finallogo} className="App-logo" alt="logo" />
-                        <AuthButtons />
-                        <Routes>
-                            {/* Main video list route */}
-                            <Route path="/" element={<VideoList />} />
-                            {/* Video player route with dynamic ID */}
-                            <Route path="/videos/:id" element={<VideoPlayer />} />
-                        </Routes>
-                        <Button />
+                        <h1 className="App-title">
+                            <span className="title-text">Pr  </span>
+                            <img src={Finallogo} className="App-logo" alt="logo"/>
+                            <span className="title-text">     Tube</span>
+                        </h1>
+                        <div className="button-container">
+                            <AuthButtons/>
+                        </div>
                     </header>
+                    <Routes>
+                        {/* Main video list route */}
+                        <Route path="/" element={<VideoList/>}/>
+                        {/* Video player route with dynamic ID */}
+                        <Route path="/videos/:id" element={<VideoPlayer/>}/>
+                    </Routes>
                 </div>
             </Router>
         </Auth0Provider>
