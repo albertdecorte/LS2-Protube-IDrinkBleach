@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+
 public interface VideoRepository {
     void save(Video video);
     List<Video> findAll();
