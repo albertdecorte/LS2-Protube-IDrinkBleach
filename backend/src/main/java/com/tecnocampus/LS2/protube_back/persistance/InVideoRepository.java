@@ -27,4 +27,11 @@ public class InVideoRepository implements VideoRepository {
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public List<Video> findByUser(String userName) {
+        return videos.stream()
+                .filter(video -> video.getUser().equals(userName))
+                .toList(); // Requires Java 16+ for .toList(), else use .collect(Collectors.toList())
+    }
 }
