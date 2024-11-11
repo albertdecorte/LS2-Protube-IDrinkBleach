@@ -2,9 +2,6 @@ package com.tecnocampus.LS2.protube_back.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-
 import java.util.List;
 
 public class Video {
@@ -168,6 +165,7 @@ public class Video {
         public static class Comment {
             private String text;
             private String author;
+            private Video video;
 
             @JsonCreator
             public Comment(

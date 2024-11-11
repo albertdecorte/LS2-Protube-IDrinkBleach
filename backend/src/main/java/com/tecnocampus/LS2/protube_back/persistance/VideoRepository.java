@@ -12,4 +12,5 @@ public interface VideoRepository {
     List<Video> findAll();
 
     Video findById(Long videoId);
+    List<Video> findByUser(String userName);
 }

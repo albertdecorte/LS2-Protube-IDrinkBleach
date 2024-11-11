@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class InVideoRepository implements VideoRepository {
+public abstract class InVideoRepository implements VideoRepository {
     private final List<Video> videos = new ArrayList<>();
 
     @Override
@@ -27,4 +27,5 @@ public class InVideoRepository implements VideoRepository {
                 .findFirst()
                 .orElse(null);
     }
+
 }
