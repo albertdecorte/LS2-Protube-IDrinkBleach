@@ -40,7 +40,7 @@ function App() {
             <Router>
                 <div className="App">
                     <header className="App-header">
-                        <button className="App-button">
+                        <button className="App-button" onClick={() => window.location.href = 'http://localhost:8080'}>
                             <span className="title-text">Pr</span>
                             <img src={Finallogo} className="App-logo" alt="logo" />
                             <span className="title-text">Tube</span>
