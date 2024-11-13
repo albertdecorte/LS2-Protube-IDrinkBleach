@@ -7,7 +7,9 @@ import jakarta.persistence.Id;
 
 import java.util.List;
 
+@Entity
 public class Video {
+    @Id
     private Long id;
     private int width;
     private int height;
@@ -38,6 +40,10 @@ public class Video {
         this.meta = meta;
         this.videoPath = "http://localhost:8080/media/" + id + ".mp4";
         this.imagePath = "http://localhost:8080/media/" + id + ".webp";
+    }
+
+    public Video() {
+        
     }
 
     // Getters and Setters

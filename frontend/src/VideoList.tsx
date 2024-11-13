@@ -18,7 +18,7 @@ const VideoList: React.FC = () => {
     useEffect(() => {
         fetch('http://localhost:8080/api/videos')
             .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch videos');
+                if (!response.ok) throw new Error('Without connection');
                 return response.json();
             })
             .then(data => setVideos(data))
