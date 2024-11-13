@@ -1,6 +1,7 @@
 package com.tecnocampus.LS2.protube_back.application.DTO;
 
 import com.tecnocampus.LS2.protube_back.domain.Video;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VideoDTO {
@@ -15,6 +16,7 @@ public class VideoDTO {
     private List<String> tags;
     private String videoPath;
     private String imagePath;
+    private List<CommentDTO> comments;
 
     public VideoDTO(Long id, int width, int height, double duration,
                     String title, String user, String description,
@@ -45,6 +47,7 @@ public class VideoDTO {
         this.tags = video.getMeta().getTags();
         this.videoPath = video.getVideoPath();
         this.imagePath = video.getImagePath();
+        this.comments = new ArrayList<>();
     }
 
     public VideoDTO() {}
@@ -86,5 +89,33 @@ public class VideoDTO {
 
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
+    }
+
+    public VideoDTO(Long id, int width, int height, double duration,
+                    String title, String user, String description,
+                    List<String> categories, List<String> tags,
+                    String videoPath, String imagePath,
+                    List<CommentDTO> comments) {
+        this.id = id;
+        this.width = width;
+        this.height = height;
+        this.duration = duration;
+        this.title = title;
+        this.user = user;
+        this.description = description;
+        this.categories = categories;
+        this.tags = tags;
+        this.videoPath = videoPath;
+        this.imagePath = imagePath;
+        this.comments = comments;
+    }
+    public static class CommentDTO {
+        private String text;
+        private String author;
+
+        public CommentDTO(String text, String author) {
+            this.text = text;
+            this.author = author;
+        }
     }
 }

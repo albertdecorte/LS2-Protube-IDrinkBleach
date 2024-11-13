@@ -168,6 +168,7 @@ public class Video {
         public static class Comment {
             private String text;
             private String author;
+            private Video video;
 
             @JsonCreator
             public Comment(

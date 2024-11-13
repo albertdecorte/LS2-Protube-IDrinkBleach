@@ -49,5 +49,33 @@ public class VideoService {
         VideoDTO videoDTO = convertToDTO(video);
         return videoDTO;
     }
+
+    public List<VideoDTO> getVideosWithCommentsByAuthor(String author) {
+        List<Video> videos = videoRepository.findAll();
+        List<VideoDTO> videosWithComments = new ArrayList<>();
+
+        for (Video video : videos) {
+            List<Video.Meta.Comment> videoComments = video.getMeta().getComments();
+            List<VideoDTO.CommentDTO> authorComments = new ArrayList<>();
+
+            for (Video.Meta.Comment comment : videoComments) {
+                if (comment.getAuthor().equalsIgnoreCase(author)) {
+                    authorComments.add(new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor()));
+                }
+            }
+
+            if (!authorComments.isEmpty()) {
+                VideoDTO videoDTO = new VideoDTO(
+                        video.getId(), video.getWidth(), video.getHeight(),
+                        video.getDuration(), video.getTitle(), video.getUser(),
+                        video.getMeta().getDescription(), video.getMeta().getCategories(),
+                        video.getMeta().getTags(), video.getVideoPath(), video.getImagePath(),
+                        authorComments
+                );
+                videosWithComments.add(videoDTO);
+            }
+        }
+        return videosWithComments;
+    }
 }
 

@@ -44,4 +44,9 @@ public class VideosController {
         return ResponseEntity.ok(videos);  // Devolver los videos
 
     }
+    @GetMapping("/videos/comments/{author}")
+    public ResponseEntity<List<VideoDTO>> getVideosWithCommentsByAuthor(@PathVariable String author) {
+        List<VideoDTO> videosWithComments = videoService.getVideosWithCommentsByAuthor(author);
+        return ResponseEntity.ok(videosWithComments);
+    }
 }

@@ -29,6 +29,17 @@
   z-index: 1;
 }
 
+.App-button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  z-index: 2;
+}
+
 /* Move the diagonal lines to the .App-header class and adjust dimensions */
 .App-header:before,
 .App-header:after,
@@ -80,8 +91,8 @@
   align-items: center;
   flex: 1;
   justify-content: flex-end;
-  position: relative; /* Ensure the button container is above the lines */
-  z-index: 2; /* Set the z-index higher than the lines */
+  position: relative;
+  z-index: 2;
 }
 
 @keyframes App-logo-spin {

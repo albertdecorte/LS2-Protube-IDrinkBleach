@@ -40,11 +40,11 @@ function App() {
             <Router>
                 <div className="App">
                     <header className="App-header">
-                        <h1 className="App-title">
-                            <span className="title-text">Pr  </span>
-                            <img src={Finallogo} className="App-logo" alt="logo"/>
-                            <span className="title-text">     Tube</span>
-                        </h1>
+                        <button className="App-button">
+                            <span className="title-text">Pr</span>
+                            <img src={Finallogo} className="App-logo" alt="logo" />
+                            <span className="title-text">Tube</span>
+                        </button>
                         <div className="button-container">
                             <AuthButtons/>
                             <div className="diagonal-line"></div>
