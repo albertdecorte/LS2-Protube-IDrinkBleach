@@ -45,12 +45,12 @@
 
 .App-header:before {
   transform: rotate(45deg);
-  left: 65%;
+  left: 75%;
 }
 
 .App-header:after {
   transform: rotate(45deg);
-  left: 70%;
+  left: 79%;
 }
 
 .diagonal-line {
