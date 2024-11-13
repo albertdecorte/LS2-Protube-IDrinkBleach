@@ -18,23 +18,61 @@
   min-height: 25vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   font-size: calc(15px + 2vmin);
   color: rgb(255, 255, 255);
   padding: 10px;
   position: relative; /* To position the button */
   width: 100%; /* Ensure it takes full width */
   box-sizing: border-box;
+  overflow: hidden; /* Ensure lines don't overflow */
+  z-index: 1;
+}
+
+/* Move the diagonal lines to the .App-header class and adjust dimensions */
+.App-header:before,
+.App-header:after,
+.diagonal-line,
+.new-diagonal-line {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 600%;
+  background-color: red;
+  top: -100%;
+  z-index: 0; /* Ensure lines are below other elements */
+}
+
+.App-header:before {
+  transform: rotate(45deg);
+  left: 65%;
+}
+
+.App-header:after {
+  transform: rotate(45deg);
+  left: 70%;
+}
+
+.diagonal-line {
+  transform: rotate(45deg);
+  left: 97%;
 }
 
 .App-link {
   color: #61dafb;
 }
 
+.App-title {
+  position: relative; /* Ensure the title is above the lines */
+  z-index: 2; /* Set the z-index higher than the lines */
+}
+
 .header-content {
   display: flex;
   align-items: center;
   flex: 0;
+  position: relative; /* Ensure the content is above the lines */
+  z-index: 2; /* Set the z-index higher than the lines */
 }
 
 .button-container {
@@ -42,33 +80,8 @@
   align-items: center;
   flex: 1;
   justify-content: flex-end;
-}
-/* Diagonal lines */
-.App:before,
-.App:after,
-.diagonal-line {
-  content: "";
-  position: absolute;
-  width: 3px;
-  height: 200%;
-  background-color: red;
-  top: -50%;
-  z-index: 1;
-}
-
-.App:before {
-  transform: rotate(45deg);
-  left: 10%;
-}
-
-.App:after {
-  transform: rotate(45deg);
-  left: 30%;
-}
-
-.diagonal-line {
-  transform: rotate(45deg);
-  left: 50%;
+  position: relative; /* Ensure the button container is above the lines */
+  z-index: 2; /* Set the z-index higher than the lines */
 }
 
 @keyframes App-logo-spin {

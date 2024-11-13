@@ -47,7 +47,9 @@ function App() {
                         </h1>
                         <div className="button-container">
                             <AuthButtons/>
+                            <div className="diagonal-line"></div>
                         </div>
+
                     </header>
                     <Routes>
                         {/* Main video list route */}
