@@ -50,12 +50,12 @@
 
 .App-header:after {
   transform: rotate(45deg);
-  left: 79%;
+  left: 80%;
 }
 
 .diagonal-line {
   transform: rotate(45deg);
-  left: 97%;
+  left: 99%;
 }
 
 .App-link {
