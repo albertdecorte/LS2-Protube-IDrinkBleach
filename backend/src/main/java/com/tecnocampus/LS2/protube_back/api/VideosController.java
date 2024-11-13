@@ -39,7 +39,7 @@ public class VideosController {
 
     @GetMapping
     public ResponseEntity<List<VideoDTO>> loadInitialData() {
-        appStartupRunner.loadData();  // Cargar los datos
+
         List<VideoDTO> videos = videoService.getAllVideos(); // Obtener todos los videos
         return ResponseEntity.ok(videos);  // Devolver los videos
 

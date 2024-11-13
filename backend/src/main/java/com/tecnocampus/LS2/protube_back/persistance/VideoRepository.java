@@ -5,6 +5,7 @@ import com.tecnocampus.LS2.protube_back.domain.Video;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface VideoRepository {
@@ -14,4 +15,5 @@ public interface VideoRepository {
     Video findById(Long videoId);
 
     List<Video> findByUser(String userName);
+
 }

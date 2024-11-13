@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 @Component
@@ -51,7 +52,7 @@ public class AppStartupRunner implements ApplicationRunner {
     private void loadInitialData() {
         try {
             loadVideoData();
-            loadThumbnailData();
+
         } catch (IOException e) {
             LOG.error("Failed to load initial data", e);
         }
@@ -65,47 +66,23 @@ public class AppStartupRunner implements ApplicationRunner {
         }
     }
 
-    private void loadThumbnailData() throws IOException {
-        try (Stream<Path> paths = Files.walk(rootPath)) {
-            paths.filter(Files::isRegularFile)
-                    .filter(path -> path.toString().endsWith(".webp"))
-                    .forEach(this::processThumbnailFile);
-        }
-    }
+
 
     private void processVideoFile(Path path) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Video video = objectMapper.readValue(path.toFile(), Video.class);
-            videoRepository.save(video);
+            Video existingVideo = videoRepository.findById(video.getId());
+            if(existingVideo == null) {
+                videoRepository.save(video);
+            }
             LOG.info("Loaded video: " + video.getTitle());
         } catch (IOException e) {
             LOG.error("Failed to process video file: " + path, e);
         }
     }
 
-    private void processThumbnailFile(Path path) {
-        String filename = path.getFileName().toString();
-        String videoIdStr = filename.replace(".webp", "");
-        try {
-            Long videoId = Long.parseLong(videoIdStr);
-            Video video = videoRepository.findById(videoId);
-            if (video != null) {
-                String correctPath = "http://localhost:8080/media/" + videoId + ".webp";
-                video.setImagePath(correctPath);
 
-                videoRepository.save(video);
-                LOG.info("Loaded thumbnail for video ID " + videoId + ": " + path);
-            } else {
-                LOG.warn("No video found for thumbnail ID: " + videoId);
-            }
-        } catch (NumberFormatException e) {
-            LOG.error("Invalid video ID in thumbnail filename: " + filename, e);
-        } catch (Exception e) {
-            LOG.error("Failed to process thumbnail file: " + path, e);
-        }
-
-    }
 
     public void loadData() {
         loadInitialData();
