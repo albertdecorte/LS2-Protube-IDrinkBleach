@@ -27,7 +27,7 @@ const VideoList: React.FC = () => {
 
     return (
         <div className="video-list-container">
-            <h1>Video List</h1>
+            <h1>Recommended:</h1>
             {error && <p>Error: {error}</p>}
             <ul className="video-grid">
                 {videos.map(video => (

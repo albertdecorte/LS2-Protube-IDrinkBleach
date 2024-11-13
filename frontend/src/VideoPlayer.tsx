@@ -47,12 +47,11 @@ const VideoPlayer: React.FC = () => {
 
     return (
         <div id="video-player-container">
-            <h1 id="video-title">{video.title}</h1>
             <video controls>
-                <source src={video.videoPath} type="video/mp4" />
+                <source src={video.videoPath} type="video/mp4"/>
             </video>
+            <h1 id="video-title">{video.title}</h1>
             <p id="video-user">{video.user}</p>
-
             {/* Clickable Description Box */}
             <div id="description-box" className={expanded ? 'expanded' : ''} onClick={handleToggleExpand}>
                 <p className="video-description">

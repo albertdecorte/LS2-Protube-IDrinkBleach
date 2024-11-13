@@ -1,17 +1,22 @@
 .video-list-container {
     padding: 20px;
-    max-width: 1200px;
+    max-width: 100%;
     margin: 0 auto;
+    background-color: #292929;
+    color: #fff;
 }
 
+/* Grid layout for video thumbnails */
 .video-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Wider video boxes */
     gap: 16px;
+    padding: 0 10px;
 }
 
+/* Styling video item */
 .video-item {
-    background-color: #fff;
+    background-color: #3c3c3c;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -23,33 +28,37 @@
     transform: scale(1.05);
 }
 
+/* Thumbnail styling */
 .thumbnail {
     width: 100%;
-    height: auto;
-    max-height: 150px;
+    height: 150px; /* Fixed height */
     object-fit: cover;
 }
 
+/* Video information container */
 .video-info {
     padding: 10px;
+    color: #ffffff;
 }
 
+/* Styling for video titles */
 .video-title {
     font-size: 16px;
     font-weight: 600;
-    color: #333;
-    margin: 8px 0 0;           /* Adjusts the margin above the title */
-    line-height: 1.3;          /* Line spacing for readability */
+    color: #fff;
+    margin: 8px 0 0;
+    line-height: 1.3;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 2;     /* Limits to 2 lines */
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    white-space: normal;       /* Allows wrapping onto multiple lines */
+    white-space: normal;
 }
 
+/* Styling for user name */
 .video-user {
     font-size: 14px;
-    color: #666;
-    margin-top: 4px;    /* Adds space above the user name */
+    color: #aaaaaa;
+    margin-top: 4px;
 }
