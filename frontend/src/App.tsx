@@ -47,7 +47,6 @@ function App() {
                         </button>
                         <div className="button-container">
                             <AuthButtons/>
-                            <div className="diagonal-line"></div>
                         </div>
 
                     </header>

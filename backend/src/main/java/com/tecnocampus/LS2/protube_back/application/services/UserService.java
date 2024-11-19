@@ -22,8 +22,4 @@ public class UserService {
         User newUser = userDTOToUser(user);
         return userRepository.save(newUser);
     }
-
-
-
-
 }

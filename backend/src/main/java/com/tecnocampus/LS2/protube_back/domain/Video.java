@@ -2,12 +2,10 @@ package com.tecnocampus.LS2.protube_back.domain;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 
 import java.util.List;
 
-@Entity
 public class Video {
     @Id
     private Long id;

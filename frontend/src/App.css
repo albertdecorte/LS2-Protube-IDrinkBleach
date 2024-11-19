@@ -40,15 +40,14 @@
   z-index: 2;
 }
 
-/* Move the diagonal lines to the .App-header class and adjust dimensions */
 .App-header:before,
 .App-header:after,
-.diagonal-line,
+
 .new-diagonal-line {
   content: "";
   position: absolute;
   width: 8px;
-  height: 600%;
+  height: 300%;
   background-color: red;
   top: -100%;
   z-index: 0; /* Ensure lines are below other elements */
@@ -62,11 +61,6 @@
 .App-header:after {
   transform: rotate(45deg);
   left: 80%;
-}
-
-.diagonal-line {
-  transform: rotate(45deg);
-  left: 99%;
 }
 
 .App-link {
