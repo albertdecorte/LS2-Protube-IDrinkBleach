@@ -17,7 +17,7 @@ public class UserService {
         User notDTO = new User(oldUser.getUserNameDTO(),oldUser.getGmailDTO(), oldUser.getPasswordDTO());
         return notDTO;
     }
-//TODO:ADD USER
+
     public User addUser(UserDTO user) {
         User newUser = userDTOToUser(user);
         return userRepository.save(newUser);
