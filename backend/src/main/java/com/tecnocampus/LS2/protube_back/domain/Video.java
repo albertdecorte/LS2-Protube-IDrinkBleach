@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "videos")
 public class Video {
@@ -17,7 +15,7 @@ public class Video {
     private int height;
     private double duration;
     private String title;
-    private String user;
+    private String userName;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "meta_id")
@@ -42,7 +40,7 @@ public class Video {
         this.height = height;
         this.duration = duration;
         this.title = title;
-        this.user = user;
+        this.userName = user;
         this.meta = meta;
         this.videoPath = "http://localhost:8080/media/" + id + ".mp4";
         this.imagePath = "http://localhost:8080/media/" + id + ".webp";
@@ -66,8 +64,8 @@ public class Video {
     public String getTitle() { return title; }
     public void setTitle(String title) { this.title = title; }
 
-    public String getUser() { return user; }
-    public void setUser(String user) { this.user = user; }
+    public String getUserName() { return userName; }
+    public void setUserName(String user) { this.userName = user; }
 
     public Meta getMeta() { return meta; }
     public void setMeta(Meta meta) { this.meta = meta; }

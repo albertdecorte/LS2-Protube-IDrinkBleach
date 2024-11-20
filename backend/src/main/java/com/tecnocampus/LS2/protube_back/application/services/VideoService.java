@@ -2,13 +2,11 @@ package com.tecnocampus.LS2.protube_back.application.services;
 
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.domain.Video;
-import com.tecnocampus.LS2.protube_back.domain.Comment;
 import com.tecnocampus.LS2.protube_back.persistance.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,7 +61,7 @@ public class VideoService {
         videoDTO.setHeight(video.getHeight());
         videoDTO.setDuration(video.getDuration());
         videoDTO.setTitle(video.getTitle());
-        videoDTO.setUser(video.getUser());
+        videoDTO.setUser(video.getUserName());
 
         if (video.getMeta() != null) {
             videoDTO.setDescription(video.getMeta().getDescription());

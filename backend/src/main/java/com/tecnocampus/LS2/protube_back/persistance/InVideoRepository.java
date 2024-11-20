@@ -32,7 +32,7 @@ public class InVideoRepository implements VideoRepository {
     @Override
     public List<Video> findByUser(String userName) {
         return videos.stream()
-                .filter(video -> video.getUser().equals(userName))
+                .filter(video -> video.getUserName().equals(userName))
                 .collect(Collectors.toList());
     }
 }
