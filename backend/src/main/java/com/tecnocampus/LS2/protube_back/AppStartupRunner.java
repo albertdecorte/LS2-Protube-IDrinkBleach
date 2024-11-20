@@ -47,7 +47,6 @@ public class AppStartupRunner implements ApplicationRunner {
     private void loadInitialData() {
         try {
             loadVideoData();
-            addCommentsToVideos();  // Afegim comentaris després de carregar els vídeos
         } catch (IOException e) {
             LOG.error("Failed to load initial data", e);
         }
@@ -76,37 +75,6 @@ public class AppStartupRunner implements ApplicationRunner {
 
         } catch (IOException e) {
             LOG.error("Failed to process video file: " + path, e);
-        }
-    }
-
-    // Mètode per afegir comentaris als primers 4 vídeos
-    private void addCommentsToVideos() {
-        List<Video> videos = videoRepository.findAll(); // Obtinc tots els vídeos
-
-        // Afegir comentaris als primers 4 vídeos
-        for (int i = 0; i < 4 && i < videos.size(); i++) {
-            Video video = videos.get(i);
-            addCommentToVideo(video.getId(), new Comment("User1", "Great video! Loved it."));
-            addCommentToVideo(video.getId(), new Comment("User2", "This was really helpful, thanks!"));
-            addCommentToVideo(video.getId(), new Comment("User3", "Amazing content, very informative!"));
-            addCommentToVideo(video.getId(), new Comment("User4", "I disagree with some points, but still good."));
-            addCommentToVideo(video.getId(), new Comment("User5", "Looking forward to more videos like this!"));
-        }
-    }
-
-    // Mètode per afegir un comentari a un vídeo
-    private void addCommentToVideo(Long videoId, Comment comment) {
-        // Obtenim el vídeo utilitzant .orElse(null) per obtenir el valor o null si no existeix
-        Video video = videoRepository.findById(videoId).orElse(null);
-
-        if (video != null) {
-            // Afegim el comentari al vídeo
-            video.getMeta().getComments().add(comment);
-            videoRepository.save(video); // Guardem el vídeo amb els comentaris afegits
-            LOG.info("Added comment to video: " + video.getTitle());
-            LOG.info("Comment: " + video.getMeta().getComments().get(0).getText());
-        } else {
-            LOG.warn("Video with ID " + videoId + " not found.");
         }
     }
 

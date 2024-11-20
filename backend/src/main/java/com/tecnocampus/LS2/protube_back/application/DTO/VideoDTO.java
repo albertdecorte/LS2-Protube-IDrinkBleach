@@ -1,10 +1,16 @@
 package com.tecnocampus.LS2.protube_back.application.DTO;
 
-import com.tecnocampus.LS2.protube_back.domain.Video;
+import com.tecnocampus.LS2.protube_back.domain.Comment;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 public class VideoDTO {
+    // Getters i Setters
     private Long id;
     private int width;
     private int height;
@@ -35,45 +41,11 @@ public class VideoDTO {
         this.imagePath = imagePath;
     }
 
-    public VideoDTO() {}
+    public VideoDTO() {
+    }
 
-    // Getters i Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public int getWidth() { return width; }
-    public void setWidth(int width) { this.width = width; }
-
-    public int getHeight() { return height; }
-    public void setHeight(int height) { this.height = height; }
-
-    public double getDuration() { return duration; }
-    public void setDuration(double duration) { this.duration = duration; }
-
-    public String getTitle() { return title; }
-    public void setTitle(String title) { this.title = title; }
-
-    public String getUser() { return user; }
-    public void setUser(String user) { this.user = user; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public List<String> getCategories() { return categories; }
-    public void setCategories(List<String> categories) { this.categories = categories; }
-
-    public List<String> getTags() { return tags; }
-    public void setTags(List<String> tags) { this.tags = tags; }
-
-    public String getVideoPath() { return videoPath; }
-    public void setVideoPath(String videoPath) { this.videoPath = videoPath; }
-
-    public String getImagePath() { return imagePath; }
-    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
-
-    public List<CommentDTO> getComments() { return comments; }
-    public void setComments(List<CommentDTO> comments) { this.comments = comments; }
-
+    @Setter
+    @Getter
     public static class CommentDTO {
         private String text;
         private String author;
@@ -83,10 +55,10 @@ public class VideoDTO {
             this.author = author;
         }
 
-        public String getText() { return text; }
-        public void setText(String text) { this.text = text; }
+        public CommentDTO(Comment comment) {
+            this.text = comment.getText();
+            this.author = comment.getAuthor();
+        }
 
-        public String getAuthor() { return author; }
-        public void setAuthor(String author) { this.author = author; }
     }
 }

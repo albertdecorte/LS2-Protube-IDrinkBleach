@@ -1,18 +1,23 @@
 package com.tecnocampus.LS2.protube_back.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
+
+@Setter
+@Getter
 @Entity
 @Table(name = "meta")
 public class Meta {
 
+    // Getters i Setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Lob
+    @Column(name = "description", columnDefinition = "CLOB", length = 100000)
     private String description;
 
     @ElementCollection
@@ -32,22 +37,8 @@ public class Meta {
         this.comments = comments;
     }
 
-    public Meta() {}
+    public Meta() {
+    }
 
-    // Getters i Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-
-    public List<String> getCategories() { return categories; }
-    public void setCategories(List<String> categories) { this.categories = categories; }
-
-    public List<String> getTags() { return tags; }
-    public void setTags(List<String> tags) { this.tags = tags; }
-
-    public List<Comment> getComments() { return comments; }
-    public void setComments(List<Comment> comments) { this.comments = comments; }
 }
 

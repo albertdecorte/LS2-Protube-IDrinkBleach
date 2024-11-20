@@ -62,6 +62,7 @@ public class VideoService {
         videoDTO.setDuration(video.getDuration());
         videoDTO.setTitle(video.getTitle());
         videoDTO.setUser(video.getUserName());
+        videoDTO.setComments(video.getMeta().getComments().stream().map(VideoDTO.CommentDTO::new).toList());
 
         if (video.getMeta() != null) {
             videoDTO.setDescription(video.getMeta().getDescription());
