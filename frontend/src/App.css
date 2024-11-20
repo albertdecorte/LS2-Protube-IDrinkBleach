@@ -22,16 +22,17 @@
   font-size: calc(15px + 2vmin);
   color: rgb(255, 255, 255);
   padding: 10px;
-  position: relative; /* To position the button */
-  width: 100%; /* Ensure it takes full width */
+  position: relative;
+  width: 100%;
   box-sizing: border-box;
-  overflow: hidden; /* Ensure lines don't overflow */
+  overflow: hidden;
   z-index: 1;
 }
 
 .App-button {
   display: flex;
   align-items: center;
+  margin-left: 25px;
   background-color: transparent;
   border: none;
   color: inherit;
@@ -87,6 +88,43 @@
   justify-content: flex-end;
   position: relative;
   z-index: 2;
+}
+
+.oauth-button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: #16181c;
+  font-size: inherit;
+  cursor: pointer;
+}
+
+.oauth-button.logout {
+  background-color: #d80000;
+}
+
+.oauth-button:hover {
+  background-color: #003ea8;
+}
+
+.oauth-button.logout:hover {
+  background-color: #a80000;
+}
+
+.button-icon {
+  width: 500px;
+  height: 200px;
+  margin-top: 8px;
+  margin-right: 8px;
+  Color: #16181c;
+}
+
+.auth-container {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  gap: 10px;
 }
 
 @keyframes App-logo-spin {

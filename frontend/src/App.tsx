@@ -3,7 +3,9 @@ import {Auth0Provider, useAuth0} from '@auth0/auth0-react';
 import Finallogo from './assets/Finallogo.svg';
 import VideoList from "./VideoList";
 import VideoPlayer from './VideoPlayer';
+import LoginButton from './assets/LoginButton.svg';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import IchigoLogo from './assets/IchigoLogo.svg';
 
 const domain = "dev-r7hj507hsi3jn34i.us.auth0.com";
 const clientId = "g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ";
@@ -12,9 +14,18 @@ const clientId = "g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ";
 const AuthButtons = () => {
     const {loginWithRedirect, logout, isAuthenticated} = useAuth0();
     return (
-        <div>
+        <div style={{ background: 'transparent', padding: 0 }}>
             {!isAuthenticated && (
-                <button onClick={() => loginWithRedirect()}>Login</button>
+                <button onClick={() => loginWithRedirect()}
+                        style={{
+                            backgroundColor: "transparent",
+                            border: "none",
+                            padding: 0,
+                            margin: 0
+                        }}
+                >
+                    <img src={LoginButton} className="button-icon" alt="logo" />
+                </button>
             )}
             {isAuthenticated && (
                 <>
@@ -41,14 +52,13 @@ function App() {
                 <div className="App">
                     <header className="App-header">
                         <button className="App-button" onClick={() => window.location.href = 'http://localhost:8080'}>
-                            <span className="title-text">Pr</span>
+                            <span className="title-text">Pr      </span>
                             <img src={Finallogo} className="App-logo" alt="logo" />
-                            <span className="title-text">Tube</span>
+                            <span className="title-text">  Tube</span>
                         </button>
                         <div className="button-container">
                             <AuthButtons/>
                         </div>
-
                     </header>
                     <Routes>
                         {/* Main video list route */}
