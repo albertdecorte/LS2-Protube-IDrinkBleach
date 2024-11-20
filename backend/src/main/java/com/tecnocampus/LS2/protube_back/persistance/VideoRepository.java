@@ -12,7 +12,7 @@ public interface VideoRepository {
     void save(Video video);
     List<Video> findAll();
 
-    Video findById(Long videoId);
+    Optional<Video> findById(Long videoId);
 
     List<Video> findByUser(String userName);
 

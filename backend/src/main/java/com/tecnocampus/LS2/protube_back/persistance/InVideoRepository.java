@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class InVideoRepository implements VideoRepository {
@@ -21,17 +23,16 @@ public class InVideoRepository implements VideoRepository {
     }
 
     @Override
-    public Video findById(Long id) {
+    public Optional<Video> findById(Long id) {
         return videos.stream()
                 .filter(video -> video.getId().equals(id))
-                .findFirst()
-                .orElse(null);
+                .findFirst();  // Retorna un Optional<Video>
     }
 
     @Override
     public List<Video> findByUser(String userName) {
         return videos.stream()
                 .filter(video -> video.getUser().equals(userName))
-                .toList(); // Requires Java 16+ for .toList(), else use .collect(Collectors.toList())
+                .collect(Collectors.toList());
     }
 }

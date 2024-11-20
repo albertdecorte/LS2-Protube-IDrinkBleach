@@ -5,11 +5,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users")
 public class User {
-    String userName;
+    private String userName;
+
     @Id
-    String gmail;
-    String password;
+    private String gmail;
+
+    private String password;
 
     public User(String userName, String gmail, String password) {
         this.userName = userName;
@@ -19,27 +22,13 @@ public class User {
 
     public User() {}
 
-    public String getUserName() {
-        return userName;
-    }
+    // Getters i Setters
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public String getGmail() { return gmail; }
+    public void setGmail(String gmail) { this.gmail = gmail; }
 
-    public String getGmail() {
-        return gmail;
-    }
-
-    public void setGmail(String gmail) {
-        this.gmail = gmail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 }

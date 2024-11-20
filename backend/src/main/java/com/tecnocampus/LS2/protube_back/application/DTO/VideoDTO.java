@@ -16,12 +16,12 @@ public class VideoDTO {
     private List<String> tags;
     private String videoPath;
     private String imagePath;
-    private List<CommentDTO> comments;
+    private List<CommentDTO> comments = new ArrayList<>();
 
     public VideoDTO(Long id, int width, int height, double duration,
                     String title, String user, String description,
                     List<String> categories, List<String> tags,
-                    String videoPath, String imagePath) {  // Add imagePath to the constructor
+                    String videoPath, String imagePath) {
         this.id = id;
         this.width = width;
         this.height = height;
@@ -35,24 +35,9 @@ public class VideoDTO {
         this.imagePath = imagePath;
     }
 
-    public VideoDTO(Video video) {
-        this.id = video.getId();
-        this.width = video.getWidth();
-        this.height = video.getHeight();
-        this.duration = video.getDuration();
-        this.title = video.getTitle();
-        this.user = video.getUser();
-        this.description = video.getMeta().getDescription();
-        this.categories = video.getMeta().getCategories();
-        this.tags = video.getMeta().getTags();
-        this.videoPath = video.getVideoPath();
-        this.imagePath = video.getImagePath();
-        this.comments = new ArrayList<>();
-    }
-
     public VideoDTO() {}
 
-    // Getters and Setters
+    // Getters i Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -80,35 +65,15 @@ public class VideoDTO {
     public List<String> getTags() { return tags; }
     public void setTags(List<String> tags) { this.tags = tags; }
 
+    public String getVideoPath() { return videoPath; }
+    public void setVideoPath(String videoPath) { this.videoPath = videoPath; }
+
     public String getImagePath() { return imagePath; }
     public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 
-    public String getVideoPath() {
-        return videoPath;
-    }
+    public List<CommentDTO> getComments() { return comments; }
+    public void setComments(List<CommentDTO> comments) { this.comments = comments; }
 
-    public void setVideoPath(String videoPath) {
-        this.videoPath = videoPath;
-    }
-
-    public VideoDTO(Long id, int width, int height, double duration,
-                    String title, String user, String description,
-                    List<String> categories, List<String> tags,
-                    String videoPath, String imagePath,
-                    List<CommentDTO> comments) {
-        this.id = id;
-        this.width = width;
-        this.height = height;
-        this.duration = duration;
-        this.title = title;
-        this.user = user;
-        this.description = description;
-        this.categories = categories;
-        this.tags = tags;
-        this.videoPath = videoPath;
-        this.imagePath = imagePath;
-        this.comments = comments;
-    }
     public static class CommentDTO {
         private String text;
         private String author;
@@ -117,5 +82,11 @@ public class VideoDTO {
             this.text = text;
             this.author = author;
         }
+
+        public String getText() { return text; }
+        public void setText(String text) { this.text = text; }
+
+        public String getAuthor() { return author; }
+        public void setAuthor(String author) { this.author = author; }
     }
 }

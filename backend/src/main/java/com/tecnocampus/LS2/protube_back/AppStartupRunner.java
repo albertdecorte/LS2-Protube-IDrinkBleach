@@ -72,16 +72,20 @@ public class AppStartupRunner implements ApplicationRunner {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             Video video = objectMapper.readValue(path.toFile(), Video.class);
-            Video existingVideo = videoRepository.findById(video.getId());
-            if(existingVideo == null) {
+            Optional<Video> existingVideo = videoRepository.findById(video.getId());  // Retorna un Optional
+
+            // Comprovem si el vídeo ja existeix. Si no, el guardem.
+            if (!existingVideo.isPresent()) {
                 videoRepository.save(video);
+                LOG.info("Loaded new video: " + video.getTitle());
+            } else {
+                LOG.info("Video already exists: " + video.getTitle());
             }
-            LOG.info("Loaded video: " + video.getTitle());
+
         } catch (IOException e) {
             LOG.error("Failed to process video file: " + path, e);
         }
     }
-
 
 
     public void loadData() {
