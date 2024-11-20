@@ -1,16 +1,20 @@
 package com.tecnocampus.LS2.protube_back.domain;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name = "comments")
+@Getter
+@Setter
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Lob
+    @Column(columnDefinition = "LONGTEXT", length = 100000)
     private String text;
     private String author;
 
@@ -19,15 +23,6 @@ public class Comment {
         this.author = author;
     }
 
-    public Comment() {}
-
-    // Getters i Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getText() { return text; }
-    public void setText(String text) { this.text = text; }
-
-    public String getAuthor() { return author; }
-    public void setAuthor(String author) { this.author = author; }
+    public Comment() {
+    }
 }
