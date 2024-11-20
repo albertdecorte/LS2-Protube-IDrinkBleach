@@ -1,99 +1,101 @@
-/* Dark mode styling for the video player container */
-#video-player-container {
+/* Container for the video player page */
+#video-player-page {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    background-color: #1c1c1c; /* Dark background */
+    color: #f0f0f0;
     max-width: 100%;
-    max-height: 100%;
+}
+
+/* Styling for the video player container (left column) */
+#video-player-container {
+    max-height: 75%;
     margin: 0 auto;
     padding: 20px;
     text-align: left;
     font-family: Arial, sans-serif;
     background-color: #2e2e2e; /* Dark background */
     color: #f0f0f0; /* Light text color for readability */
+    border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* Title styling in dark mode */
-#video-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #ffffff; /* White title text for better contrast */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+/* Recommended videos section (right column) */
+#recommended-videos {
+    max-width: 25%;
+    background-color: #2e2e2e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
-/* Video element styling remains the same */
+/* Recommended videos header */
+#recommended-videos h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+/* List of recommended videos */
+.recommended-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Each recommended video item */
+.recommended-item {
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #3e3e3e;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.recommended-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Thumbnail for recommended videos */
+.recommended-item .thumbnail {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+/* Video info for recommended videos */
+.recommended-item .video-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: #f0f0f0;
+}
+
+.recommended-item .video-title {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #4dabff;
+}
+
+.recommended-item .video-user {
+    font-size: 0.9rem;
+    color: #bbbbbb;
+}
 video {
     width: 100%;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); /* Darker shadow */
     margin-bottom: 10px;
     outline: none;
-}
-
-/* User label styling */
-#video-user {
-    background-color: #4c4c4c;
-    padding: 5px 10px; /* Reduced padding for a snug fit */
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-    font-size: 14px;
-    color: #bbbbbb; /* Slightly lighter gray */
-    margin-top: 2px;
-    margin-bottom: 20px;
-    display: inline-block; /* Adjust width to text content */
-    font-weight: bold;
-}
-
-/* Dark mode for the collapsible description box */
-#description-box {
-    background-color: #3e3e3e; /* Dark background for description box */
-    padding: 10px 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-    max-height: 80px;
-    overflow: hidden;
-    position: relative;
-    cursor: pointer;
-    transition: max-height 0.4s ease;
-}
-
-#description-box.expanded {
-    max-height: 1000px; /* Full height on expand */
-}
-
-/* Styling for description text */
-.video-description {
-    font-size: 14px;
-    color: #dddddd; /* Light gray for readability */
-    line-height: 1.6;
-    margin: 0;
-}
-
-/* Tags and categories styling */
-.tags, .categories {
-    font-size: 14px;
-    margin-top: 10px;
-    color: #ffffff; /* White text for tag and category labels */
-}
-
-.tags strong, .categories strong {
-    color: #ffffff; /* White color for tag and category headers */
-    font-weight: bold;
-}
-
-.tag {
-    color: #4dabff; /* Lighter blue for contrast in dark mode */
-    text-decoration: underline;
-    margin-right: 8px;
-    cursor: pointer;
-}
-
-/* Show More/Show Less button styling */
-.toggle-button {
-    display: block;
-    font-size: 14px;
-    color: #4dabff; /* Light blue for visibility */
-    margin-top: 10px;
-    text-align: left;
 }

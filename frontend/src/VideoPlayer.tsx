@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import './VideoPlayer.css';
 
 interface Video {
@@ -19,8 +19,10 @@ const VideoPlayer: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [expanded, setExpanded] = useState(false);
+    const [recommendedVideos, setRecommendedVideos] = useState<Video[]>([]);
 
     useEffect(() => {
+        // Fetch video details
         fetch(`http://localhost:8080/api/videos/${id}`)
             .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch video');
@@ -37,6 +39,23 @@ const VideoPlayer: React.FC = () => {
             });
     }, [id]);
 
+    useEffect(() => {
+        // Fetch recommended videos
+        fetch(`http://localhost:8080/api/videos`)
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch videos');
+                return response.json();
+            })
+            .then(data => {
+                // Exclude the current video and limit recommendations to 5
+                const filteredVideos = data.filter((v: Video) => v.id.toString() !== id).slice(0, 8);
+                setRecommendedVideos(filteredVideos);
+            })
+            .catch(error => {
+                console.error('Error fetching recommended videos:', error);
+            });
+    }, [id]);
+
     if (loading) return <p>Loading video...</p>;
     if (error) return <p>Error loading video: {error}</p>;
     if (!video) return <p>Video not found.</p>;
@@ -46,32 +65,56 @@ const VideoPlayer: React.FC = () => {
     };
 
     return (
-        <div id="video-player-container">
-            <video controls>
-                <source src={video.videoPath} type="video/mp4"/>
-            </video>
-            <h1 id="video-title">{video.title}</h1>
-            <p id="video-user">{video.user}</p>
-            {/* Clickable Description Box */}
-            <div id="description-box" className={expanded ? 'expanded' : ''} onClick={handleToggleExpand}>
-                <p className="video-description">
-                    {expanded ? video.description : `${video.description.slice(0, 100)}...`}
-                </p>
-                {expanded && (
-                    <>
-                        <p className="tags">
-                            <strong>Tags:</strong> {video.tags.map((tag, index) => (
-                            <span key={index} className="tag">#{tag}</span>
-                        ))}
-                        </p>
-                        <p className="categories">
-                            <strong>Categories:</strong> {video.categories.map((category, index) => (
-                            <span key={index} className="category">#{category}</span>
-                        ))}
-                        </p>
-                    </>
-                )}
-                <span className="toggle-button">{expanded ? 'Show Less' : 'Show More'}</span>
+        <div id="video-player-page">
+            {/* Main video player section */}
+
+            <div id="video-player-container">
+                <video controls>
+                    <source src={video.videoPath} type="video/mp4" />
+                </video>
+                <h1 id="video-title">{video.title}</h1>
+                <p id="video-user">By {video.user}</p>
+                {/* Clickable Description Box */}
+                <div id="description-box" className={expanded ? 'expanded' : ''} onClick={handleToggleExpand}>
+                    <p className="video-description">
+                        {expanded ? video.description : `${video.description.slice(0, 100)}...`}
+                    </p>
+                    {expanded && (
+                        <>
+                            <p className="tags">
+                                <strong>Tags:</strong>{' '}
+                                {video.tags.map((tag, index) => (
+                                    <span key={index} className="tag">#{tag}</span>
+                                ))}
+                            </p>
+                            <p className="categories">
+                                <strong>Categories:</strong>{' '}
+                                {video.categories.map((category, index) => (
+                                    <span key={index} className="category">#{category}</span>
+                                ))}
+                            </p>
+                        </>
+                    )}
+                    <span className="toggle-button">{expanded ? 'Show Less' : 'Show More'}</span>
+                </div>
+            </div>
+
+            {/* Recommended videos section */}
+            <div id="recommended-videos">
+                <h2>Recommended Videos</h2>
+                <ul className="recommended-list">
+                    {recommendedVideos.map((vid) => (
+                        <li key={vid.id} className="recommended-item">
+                            <Link to={`/videos/${vid.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                                <img src={vid.imagePath} alt={vid.title} className="thumbnail" />
+                                <div className="video-info">
+                                    <span className="video-title">{vid.title}</span>
+                                    <span className="video-user">By {vid.user}</span>
+                                </div>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );

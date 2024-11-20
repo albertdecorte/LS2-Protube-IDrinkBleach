@@ -5,7 +5,7 @@ import VideoList from "./VideoList";
 import VideoPlayer from './VideoPlayer';
 import LoginButton from './assets/LoginButton.svg';
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import IchigoLogo from './assets/IchigoLogo.svg';
+//import IchigoLogo from './assets/IchigoLogo.svg';
 
 const domain = "dev-r7hj507hsi3jn34i.us.auth0.com";
 const clientId = "g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ";
@@ -51,7 +51,7 @@ function App() {
             <Router>
                 <div className="App">
                     <header className="App-header">
-                        <button className="App-button" onClick={() => window.location.href = 'http://localhost:8080'}>
+                        <button className="App-button" onClick={() => window.location.href = 'http://localhost:5173'}>
                             <span className="title-text">Pr      </span>
                             <img src={Finallogo} className="App-logo" alt="logo" />
                             <span className="title-text">  Tube</span>
