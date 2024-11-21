@@ -13,10 +13,12 @@ public class Comment {
 
     private String text;
     private String author;
+    private String VideoTitle;
 
-    public Comment(String text, String author) {
+    public Comment(String text, String author,String videoTitle) {
         this.text = text;
         this.author = author;
+        this.VideoTitle=videoTitle;
     }
 
     public Comment() {}
@@ -30,4 +32,12 @@ public class Comment {
 
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
+
+    public String getVideoTitle() {
+        return VideoTitle;
+    }
+
+    public void setVideoTitle(String videoTitle) {
+        VideoTitle = videoTitle;
+    }
 }

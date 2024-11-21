@@ -77,10 +77,12 @@ public class VideoDTO {
     public static class CommentDTO {
         private String text;
         private String author;
+        private String videoTitle;
 
-        public CommentDTO(String text, String author) {
+        public CommentDTO(String text, String author,String videoTitle) {
             this.text = text;
             this.author = author;
+            this.videoTitle=videoTitle;
         }
 
         public String getText() { return text; }
@@ -88,5 +90,13 @@ public class VideoDTO {
 
         public String getAuthor() { return author; }
         public void setAuthor(String author) { this.author = author; }
+
+        public String getVideoTitle() {
+            return videoTitle;
+        }
+
+        public void setVideoTitle(String videoTitle) {
+            this.videoTitle = videoTitle;
+        }
     }
 }

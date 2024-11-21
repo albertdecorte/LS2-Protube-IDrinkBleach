@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -81,16 +82,32 @@ public class AppStartupRunner implements ApplicationRunner {
 
     // Mètode per afegir comentaris als primers 4 vídeos
     private void addCommentsToVideos() {
-        List<Video> videos = videoRepository.findAll(); // Obtinc tots els vídeos
+        List<Video> videos = videoRepository.findAll(); // Obtén todos los vídeos
 
-        // Afegir comentaris als primers 4 vídeos
-        for (int i = 0; i < 4 && i < videos.size(); i++) {
+        // Comprobamos si hay al menos 4 vídeos
+        if (videos.size() < 4) {
+            throw new IllegalStateException("No hay suficientes videos para agregar comentarios.");
+        }
+
+        // Agregar un comentario a los primeros 4 vídeos
+        for (int i = 0; i < 4; i++) {
             Video video = videos.get(i);
-            addCommentToVideo(video.getId(), new Comment("User1", "Great video! Loved it."));
-            addCommentToVideo(video.getId(), new Comment("User2", "This was really helpful, thanks!"));
-            addCommentToVideo(video.getId(), new Comment("User3", "Amazing content, very informative!"));
-            addCommentToVideo(video.getId(), new Comment("User4", "I disagree with some points, but still good."));
-            addCommentToVideo(video.getId(), new Comment("User5", "Looking forward to more videos like this!"));
+
+            // Crear un comentario con el nombre del usuario como autor
+            Comment comment = new Comment();
+            comment.setAuthor("Xavi");
+            comment.setText("Este es un comentario único para el video: " + video.getTitle());
+
+            // Inicializar la lista de comentarios si es nula
+            if (video.getMeta().getComments() == null) {
+                video.getMeta().setComments(new ArrayList<>());
+            }
+
+            // Agregar el comentario a la lista
+            video.getMeta().getComments().add(comment);
+
+            // Guardar el video con el nuevo comentario
+            videoRepository.save(video);
         }
     }
 

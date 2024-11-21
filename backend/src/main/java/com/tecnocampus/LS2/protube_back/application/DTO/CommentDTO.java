@@ -12,9 +12,12 @@ public class CommentDTO {
     public CommentDTO() {
     }
 
-    public CommentDTO(String text, String author) {
+
+
+    public CommentDTO(String text, String author, String videoTitle) {
         this.text = text;
         this.author = author;
+
     }
 
     public String getText() {
@@ -24,6 +27,8 @@ public class CommentDTO {
     public void setText(String text) {
         this.text = text;
     }
+
+
 
     public String getAuthor() {
         return author;

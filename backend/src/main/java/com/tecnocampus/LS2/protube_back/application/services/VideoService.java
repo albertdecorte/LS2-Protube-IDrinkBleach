@@ -6,6 +6,7 @@ import com.tecnocampus.LS2.protube_back.persistance.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,12 +36,18 @@ public class VideoService {
     }
 
     public List<VideoDTO> getVideosWithCommentsByAuthor(String author) {
+        System.out.println("Searching comments by author: " + author);
+
         return videoRepository.findAll().stream()
+                .distinct()
                 .filter(video -> video.getMeta() != null && video.getMeta().getComments() != null)
                 .map(video -> {
                     List<VideoDTO.CommentDTO> authorComments = video.getMeta().getComments().stream()
-                            .filter(comment -> author.equalsIgnoreCase(comment.getAuthor()))
-                            .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor()))
+                            .filter(comment -> {
+                                System.out.println("Checking comment author: " + comment.getAuthor());
+                                return author.equalsIgnoreCase(comment.getAuthor());
+                            })
+                            .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(),comment.getVideoTitle()))
                             .collect(Collectors.toList());
 
                     if (!authorComments.isEmpty()) {
@@ -72,5 +79,16 @@ public class VideoService {
         videoDTO.setVideoPath(video.getVideoPath());
         videoDTO.setImagePath(video.getImagePath());
         return videoDTO;
+    }
+    public List<VideoDTO.CommentDTO> getAllCommentsFromVideos() {
+        return videoRepository.findAll().stream()
+                .filter(video -> video.getMeta() != null && video.getMeta().getComments() != null)
+                .flatMap(video -> video.getMeta().getComments().stream()
+                        .map(comment -> new VideoDTO.CommentDTO(
+                                comment.getText(),
+                                comment.getAuthor(),
+                                video.getTitle()))) // Incluimos el título del video
+                .sorted(Comparator.comparing(VideoDTO.CommentDTO::getAuthor, String.CASE_INSENSITIVE_ORDER))
+                .collect(Collectors.toList());
     }
 }
