@@ -92,10 +92,66 @@
     font-size: 0.9rem;
     color: #bbbbbb;
 }
+
 video {
     width: 100%;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); /* Darker shadow */
     margin-bottom: 10px;
     outline: none;
+}
+
+/* Comments section */
+#comments-section {
+    background-color: #2e2e2e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    margin-top: 20px;
+    width: 100%;
+}
+
+#comments-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+/* List of comments */
+.comments-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Each comment item */
+.comment-item {
+    background-color: #3e3e3e;
+    border-radius: 8px;
+    padding: 15px;
+    color: #f0f0f0;
+    font-family: 'Courier New', Courier, monospace;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.comment-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Author of the comment */
+.comment-item strong {
+    font-weight: bold;
+    color: #ffffff;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Comment text */
+.comment-item p {
+    margin: 0;
 }

@@ -1,5 +1,6 @@
 package com.tecnocampus.LS2.protube_back.application.services;
 
+import com.tecnocampus.LS2.protube_back.application.DTO.CommentDTO;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.domain.Video;
 import com.tecnocampus.LS2.protube_back.persistance.VideoRepository;
@@ -91,5 +92,12 @@ public class VideoService {
                                 video.getTitle()))) // Incluimos el título del video
                 .sorted(Comparator.comparing(VideoDTO.CommentDTO::getAuthor, String.CASE_INSENSITIVE_ORDER))
                 .collect(Collectors.toList());
+    }
+    public List<VideoDTO.CommentDTO> getAllCommentsForVideo(Long videoId) {
+        return videoRepository.findById(videoId)
+                .map(video -> video.getMeta().getComments().stream()
+                        .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(), video.getTitle()))
+                        .collect(Collectors.toList()))
+                .orElseThrow(() -> new IllegalArgumentException("Video not found with id: " + videoId));
     }
 }

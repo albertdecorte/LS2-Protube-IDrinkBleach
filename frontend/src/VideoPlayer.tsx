@@ -13,6 +13,12 @@ interface Video {
     categories: string[];
 }
 
+interface Comment {
+    text: string;
+    author: string;
+    videoTitle: string;
+}
+
 const VideoPlayer: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const [video, setVideo] = useState<Video | null>(null);
@@ -20,6 +26,7 @@ const VideoPlayer: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [expanded, setExpanded] = useState(false);
     const [recommendedVideos, setRecommendedVideos] = useState<Video[]>([]);
+    const [comments, setComments] = useState<Comment[]>([]);
 
     useEffect(() => {
         // Fetch video details
@@ -56,6 +63,21 @@ const VideoPlayer: React.FC = () => {
             });
     }, [id]);
 
+    useEffect(() => {
+        // Fetch comments for the video
+        fetch(`http://localhost:8080/api/videos/${id}/comments`)
+            .then(response => {
+                if (!response.ok) throw new Error('Failed to fetch comments');
+                return response.json();
+            })
+            .then(data => {
+                setComments(data);
+            })
+            .catch(error => {
+                console.error('Error fetching comments:', error);
+            });
+    }, [id]);
+
     if (loading) return <p>Loading video...</p>;
     if (error) return <p>Error loading video: {error}</p>;
     if (!video) return <p>Video not found.</p>;
@@ -67,7 +89,6 @@ const VideoPlayer: React.FC = () => {
     return (
         <div id="video-player-page">
             {/* Main video player section */}
-
             <div id="video-player-container">
                 <video controls>
                     <source src={video.videoPath} type="video/mp4" />
@@ -96,6 +117,21 @@ const VideoPlayer: React.FC = () => {
                         </>
                     )}
                     <span className="toggle-button">{expanded ? 'Show Less' : 'Show More'}</span>
+                </div>
+                {/* Comments section */}
+                <div id="comments-section">
+                    <h2>Comments</h2>
+                    {comments.length === 0 ? (
+                        <p>No comments yet. Be the first to comment!</p>
+                    ) : (
+                        <ul className="comments-list">
+                            {comments.map((comment, index) => (
+                                <li key={index} className="comment-item">
+                                    <p><strong>{comment.author}</strong> {comment.text}</p>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
             </div>
 

@@ -54,4 +54,9 @@ public class VideosController {
         List<VideoDTO.CommentDTO> allComments = videoService.getAllCommentsFromVideos();
         return ResponseEntity.ok(allComments);
     }
+    @GetMapping("/{videoId}/comments")
+    public ResponseEntity<List<VideoDTO.CommentDTO>> getAllCommentsForVideo(@PathVariable Long videoId) {
+        List<VideoDTO.CommentDTO> comments = videoService.getAllCommentsForVideo(videoId);
+        return ResponseEntity.ok(comments);
+    }
 }
