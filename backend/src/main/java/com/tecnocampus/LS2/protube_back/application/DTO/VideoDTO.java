@@ -49,10 +49,12 @@ public class VideoDTO {
     public static class CommentDTO {
         private String text;
         private String author;
+        private String videoTitle;
 
-        public CommentDTO(String text, String author) {
+        public CommentDTO(String text, String author,String videoTitle) {
             this.text = text;
             this.author = author;
+            this.videoTitle=videoTitle;
         }
 
         public CommentDTO(Comment comment) {
@@ -60,5 +62,12 @@ public class VideoDTO {
             this.author = comment.getAuthor();
         }
 
+        public String getVideoTitle() {
+            return videoTitle;
+        }
+
+        public void setVideoTitle(String videoTitle) {
+            this.videoTitle = videoTitle;
+        }
     }
 }

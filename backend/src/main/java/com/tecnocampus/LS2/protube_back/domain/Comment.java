@@ -17,12 +17,14 @@ public class Comment {
     @Column(columnDefinition = "LONGTEXT", length = 100000)
     private String text;
     private String author;
+    private String VideoTitle;
 
-    public Comment(String text, String author) {
+    public Comment(String text, String author,String videoTitle) {
         this.text = text;
         this.author = author;
+        this.VideoTitle=videoTitle;
     }
 
-    public Comment() {
-    }
+
+    public Comment() {}
 }
