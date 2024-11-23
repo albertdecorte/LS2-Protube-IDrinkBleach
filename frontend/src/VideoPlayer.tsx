@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import './VideoPlayer.css';
 
 interface Video {
@@ -27,9 +27,27 @@ const VideoPlayer: React.FC = () => {
     const [expanded, setExpanded] = useState(false);
     const [recommendedVideos, setRecommendedVideos] = useState<Video[]>([]);
     const [comments, setComments] = useState<Comment[]>([]);
+    const [visibleVideos, setVisibleVideos] = useState(0);
+    const navigate = useNavigate(); // For programmatic navigation
+
+    // Calculate visible videos based on screen height
+    useEffect(() => {
+        const updateVisibleVideos = () => {
+            const videoItemHeight = 150; // Estimated height per recommended video item (in pixels)
+            const screenHeight = window.innerHeight; // Get window height
+            setVisibleVideos(Math.floor(screenHeight / videoItemHeight)); // Calculate number of videos
+        };
+
+        updateVisibleVideos();
+        window.addEventListener('resize', updateVisibleVideos);
+        return () => {
+            window.removeEventListener('resize', updateVisibleVideos);
+        };
+    }, []);
 
     useEffect(() => {
         // Fetch video details
+        setLoading(true); // Reset loading state
         fetch(`http://localhost:8080/api/videos/${id}`)
             .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch video');
@@ -44,7 +62,7 @@ const VideoPlayer: React.FC = () => {
                 setError(error.message);
                 setLoading(false);
             });
-    }, [id]);
+    }, [id]); // Refetch video whenever the ID changes
 
     useEffect(() => {
         // Fetch recommended videos based on categories
@@ -55,26 +73,31 @@ const VideoPlayer: React.FC = () => {
                     return response.json();
                 })
                 .then(data => {
-                    // Filter videos that belong to the same category
+                    // Filter videos by the same category
                     const sameCategoryVideos = data.filter((v: Video) =>
                         v.categories.some(category => video.categories.includes(category)) && v.id !== video.id
                     );
 
-                    // If not enough videos in the same category, fill with random ones
-                    const remainingVideos = data.filter((v: Video) => v.id !== video.id);
-                    const randomVideos = remainingVideos
-                        .sort(() => 0.5 - Math.random())
-                        .slice(0, Math.max(10 - sameCategoryVideos.length, 0));
+                    // Add random videos to fill the list
+                    const remainingVideos = data.filter(
+                        (v: Video) => v.id !== video.id && !sameCategoryVideos.includes(v)
+                    );
 
-                    // Combine same-category videos and random ones, limit to 10
-                    const recommendations = [...sameCategoryVideos, ...randomVideos].slice(0, 10);
-                    setRecommendedVideos(recommendations);
+                    const randomVideos = remainingVideos.sort(() => 0.5 - Math.random());
+
+                    // Combine same-category videos and random ones, remove duplicates
+                    const allVideos = [...sameCategoryVideos, ...randomVideos].filter(
+                        (v, index, self) => self.findIndex(vid => vid.id === v.id) === index
+                    );
+
+                    // Limit to the number of visible videos
+                    setRecommendedVideos(allVideos.slice(0, visibleVideos));
                 })
                 .catch(error => {
                     console.error('Error fetching recommended videos:', error);
                 });
         }
-    }, [video]);
+    }, [video, visibleVideos]);
 
     useEffect(() => {
         // Fetch comments for the video
@@ -97,6 +120,10 @@ const VideoPlayer: React.FC = () => {
 
     const handleToggleExpand = () => {
         setExpanded(!expanded);
+    };
+
+    const handleRecommendedVideoClick = (videoId: number) => {
+        navigate(`/videos/${videoId}`); // Programmatic navigation to the selected video
     };
 
     return (
@@ -153,14 +180,16 @@ const VideoPlayer: React.FC = () => {
                 <h2>Recommended Videos</h2>
                 <ul className="recommended-list">
                     {recommendedVideos.map((vid) => (
-                        <li key={vid.id} className="recommended-item">
-                            <Link to={`/videos/${vid.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                                <img src={vid.imagePath} alt={vid.title} className="thumbnail" />
-                                <div className="video-info">
-                                    <span className="video-title">{vid.title}</span>
-                                    <span className="video-user">By {vid.user}</span>
-                                </div>
-                            </Link>
+                        <li
+                            key={vid.id}
+                            className="recommended-item"
+                            onClick={() => handleRecommendedVideoClick(vid.id)}
+                        >
+                            <img src={vid.imagePath} alt={vid.title} className="thumbnail" />
+                            <div className="video-info">
+                                <span className="video-title">{vid.title}</span>
+                                <span className="video-user">By {vid.user}</span>
+                            </div>
                         </li>
                     ))}
                 </ul>
