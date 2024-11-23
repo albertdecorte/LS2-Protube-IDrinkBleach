@@ -6,13 +6,13 @@ public class MetaDTO {
     private String description;
     private List<String> categories;
     private List<String> tags;
-    private List<CommentDTO> comments;
+    private List<VideoDTO.CommentDTO> comments;
     private Long id;
 
     public MetaDTO() {
     }
 
-    public MetaDTO(String description, List<String> categories, List<String> tags, List<CommentDTO> comments, Long id) {
+    public MetaDTO(String description, List<String> categories, List<String> tags, List<VideoDTO.CommentDTO> comments, Long id) {
         this.description = description;
         this.categories = categories;
         this.tags = tags;
@@ -44,11 +44,11 @@ public class MetaDTO {
         this.tags = tags;
     }
 
-    public List<CommentDTO> getComments() {
+    public List<VideoDTO.CommentDTO> getComments() {
         return comments;
     }
 
-    public void setComments(List<CommentDTO> comments) {
+    public void setComments(List<VideoDTO.CommentDTO> comments) {
         this.comments = comments;
     }
 
