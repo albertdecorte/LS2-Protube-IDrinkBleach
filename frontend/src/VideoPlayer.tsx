@@ -16,6 +16,7 @@ interface Video {
 interface Comment {
     text: string;
     author: string;
+    videoTitle: string;
 }
 
 const VideoPlayer: React.FC = () => {
@@ -27,68 +28,68 @@ const VideoPlayer: React.FC = () => {
     const [recommendedVideos, setRecommendedVideos] = useState<Video[]>([]);
     const [comments, setComments] = useState<Comment[]>([]);
 
-    // Fetch the main video details
     useEffect(() => {
-        setVideo(null); // Reset video state to show loading indicator
-        setLoading(true);
-
+        // Fetch video details
         fetch(`http://localhost:8080/api/videos/${id}`)
-            .then((response) => {
+            .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch video');
                 return response.json();
             })
-            .then((data) => {
+            .then(data => {
                 setVideo(data);
                 setLoading(false);
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Error fetching video:', error);
                 setError(error.message);
                 setLoading(false);
             });
-    }, [id]); // Re-fetch when `id` changes
+    }, [id]);
 
-    // Fetch recommended videos based on similar tags
     useEffect(() => {
-        fetch(`http://localhost:8080/api/videos`)
-            .then((response) => {
-                if (!response.ok) throw new Error('Failed to fetch videos');
-                return response.json();
-            })
-            .then((data) => {
-                if (video) {
-                    // Filter videos with similar tags
-                    const similarVideos = data
-                        .filter((v: Video) => v.id.toString() !== id && v.tags.some((tag) => video.tags.includes(tag)))
-                        .slice(0, 5);
+        // Fetch recommended videos based on categories
+        if (video) {
+            fetch(`http://localhost:8080/api/videos`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Failed to fetch videos');
+                    return response.json();
+                })
+                .then(data => {
+                    // Filter videos that belong to the same category
+                    const sameCategoryVideos = data.filter((v: Video) =>
+                        v.categories.some(category => video.categories.includes(category)) && v.id !== video.id
+                    );
 
-                    // If not enough similar videos, fill the rest
-                    const remainingVideos = data
-                        .filter((v: Video) => !similarVideos.includes(v) && v.id.toString() !== id)
-                        .slice(0, 5 - similarVideos.length);
+                    // If not enough videos in the same category, fill with random ones
+                    const remainingVideos = data.filter((v: Video) => v.id !== video.id);
+                    const randomVideos = remainingVideos
+                        .sort(() => 0.5 - Math.random())
+                        .slice(0, Math.max(10 - sameCategoryVideos.length, 0));
 
-                    setRecommendedVideos([...similarVideos, ...remainingVideos]);
-                }
-            })
-            .catch((error) => {
-                console.error('Error fetching recommended videos:', error);
-            });
-    }, [video, id]); // Re-fetch when `video` or `id` changes
+                    // Combine same-category videos and random ones, limit to 10
+                    const recommendations = [...sameCategoryVideos, ...randomVideos].slice(0, 10);
+                    setRecommendedVideos(recommendations);
+                })
+                .catch(error => {
+                    console.error('Error fetching recommended videos:', error);
+                });
+        }
+    }, [video]);
 
-    // Fetch comments for the current video
     useEffect(() => {
+        // Fetch comments for the video
         fetch(`http://localhost:8080/api/videos/${id}/comments`)
-            .then((response) => {
+            .then(response => {
                 if (!response.ok) throw new Error('Failed to fetch comments');
                 return response.json();
             })
-            .then((data) => {
+            .then(data => {
                 setComments(data);
             })
-            .catch((error) => {
+            .catch(error => {
                 console.error('Error fetching comments:', error);
             });
-    }, [id]); // Re-fetch when `id` changes
+    }, [id]);
 
     if (loading) return <p>Loading video...</p>;
     if (error) return <p>Error loading video: {error}</p>;
@@ -153,7 +154,6 @@ const VideoPlayer: React.FC = () => {
                 <ul className="recommended-list">
                     {recommendedVideos.map((vid) => (
                         <li key={vid.id} className="recommended-item">
-                            {/* Redirect to the clicked video's player */}
                             <Link to={`/videos/${vid.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                 <img src={vid.imagePath} alt={vid.title} className="thumbnail" />
                                 <div className="video-info">
