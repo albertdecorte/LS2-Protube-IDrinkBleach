@@ -1,6 +1,7 @@
 package com.tecnocampus.LS2.protube_back.application.services;
 
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
+import com.tecnocampus.LS2.protube_back.domain.Comment;
 import com.tecnocampus.LS2.protube_back.domain.Video;
 import com.tecnocampus.LS2.protube_back.persistance.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,5 +99,11 @@ public class VideoService {
                         .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(), video.getTitle()))
                         .collect(Collectors.toList()))
                 .orElseThrow(() -> new IllegalArgumentException("Video not found with id: " + videoId));
+    }
+    public Comment addCommentToVideo(Long videoId, Comment comment) {
+        Video video = videoRepository.findById(videoId).orElseThrow(() -> new RuntimeException("Vídeo no trobat"));
+        video.getMeta().getComments().add(comment);
+        videoRepository.save(video);
+        return comment;
     }
 }

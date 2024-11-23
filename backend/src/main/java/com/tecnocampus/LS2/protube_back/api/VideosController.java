@@ -4,14 +4,12 @@ import com.tecnocampus.LS2.protube_back.AppStartupRunner;
 import com.tecnocampus.LS2.protube_back.ProtubeBackApplication;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.application.services.VideoService;
+import com.tecnocampus.LS2.protube_back.domain.Comment;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,5 +56,10 @@ public class VideosController {
     public ResponseEntity<List<VideoDTO.CommentDTO>> getAllCommentsForVideo(@PathVariable Long videoId) {
         List<VideoDTO.CommentDTO> comments = videoService.getAllCommentsForVideo(videoId);
         return ResponseEntity.ok(comments);
+    }
+    @PostMapping("/{videoId}/comments")
+    public ResponseEntity<Comment> addCommentToVideo(@PathVariable Long videoId, @RequestBody Comment comment) {
+        Comment savedComment = videoService.addCommentToVideo(videoId, comment);
+        return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
 }
