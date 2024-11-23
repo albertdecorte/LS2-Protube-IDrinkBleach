@@ -47,21 +47,31 @@ const VideoPlayer: React.FC = () => {
     }, [id]);
 
     useEffect(() => {
-        // Fetch recommended videos
+        if (!video) return; // Wait for the current video to load
+
         fetch(`http://localhost:8080/api/videos`)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) throw new Error('Failed to fetch videos');
                 return response.json();
             })
-            .then(data => {
-                // Exclude the current video and limit recommendations to 5
-                const filteredVideos = data.filter((v: Video) => v.id.toString() !== id).slice(0, 8);
-                setRecommendedVideos(filteredVideos);
+            .then((data) => {
+                // Filter videos with at least one similar tag
+                const similarTagVideos = data.filter((v: Video) =>
+                    v.id.toString() !== id && v.tags.some((tag) => video.tags.includes(tag))
+                );
+
+                // Fill up to 5 videos if needed
+                const remainingVideos = data.filter(
+                    (v: Video) => v.id.toString() !== id && !similarTagVideos.includes(v)
+                );
+                const filledRecommendations = [...similarTagVideos, ...remainingVideos.slice(0, 5 - similarTagVideos.length)];
+
+                setRecommendedVideos(filledRecommendations.slice(0, 5)); // Ensure at most 5 recommendations
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error fetching recommended videos:', error);
             });
-    }, [id]);
+    }, [id, video]);
 
     useEffect(() => {
         // Fetch comments for the video
