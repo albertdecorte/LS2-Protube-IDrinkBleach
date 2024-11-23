@@ -1,6 +1,5 @@
 package com.tecnocampus.LS2.protube_back.application.services;
 
-import com.tecnocampus.LS2.protube_back.application.DTO.CommentDTO;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.domain.Video;
 import com.tecnocampus.LS2.protube_back.persistance.VideoRepository;
