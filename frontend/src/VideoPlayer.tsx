@@ -16,7 +16,6 @@ interface Video {
 interface Comment {
     text: string;
     author: string;
-    videoTitle: string;
 }
 
 const VideoPlayer: React.FC = () => {
@@ -28,65 +27,68 @@ const VideoPlayer: React.FC = () => {
     const [recommendedVideos, setRecommendedVideos] = useState<Video[]>([]);
     const [comments, setComments] = useState<Comment[]>([]);
 
+    // Fetch the main video details
     useEffect(() => {
-        // Fetch video details
+        setVideo(null); // Reset video state to show loading indicator
+        setLoading(true);
+
         fetch(`http://localhost:8080/api/videos/${id}`)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) throw new Error('Failed to fetch video');
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 setVideo(data);
                 setLoading(false);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error fetching video:', error);
                 setError(error.message);
                 setLoading(false);
             });
-    }, [id]);
+    }, [id]); // Re-fetch when `id` changes
 
+    // Fetch recommended videos based on similar tags
     useEffect(() => {
-        if (!video) return; // Wait for the current video to load
-
         fetch(`http://localhost:8080/api/videos`)
             .then((response) => {
                 if (!response.ok) throw new Error('Failed to fetch videos');
                 return response.json();
             })
             .then((data) => {
-                // Filter videos with at least one similar tag
-                const similarTagVideos = data.filter((v: Video) =>
-                    v.id.toString() !== id && v.tags.some((tag) => video.tags.includes(tag))
-                );
+                if (video) {
+                    // Filter videos with similar tags
+                    const similarVideos = data
+                        .filter((v: Video) => v.id.toString() !== id && v.tags.some((tag) => video.tags.includes(tag)))
+                        .slice(0, 5);
 
-                // Fill up to 5 videos if needed
-                const remainingVideos = data.filter(
-                    (v: Video) => v.id.toString() !== id && !similarTagVideos.includes(v)
-                );
-                const filledRecommendations = [...similarTagVideos, ...remainingVideos.slice(0, 5 - similarTagVideos.length)];
+                    // If not enough similar videos, fill the rest
+                    const remainingVideos = data
+                        .filter((v: Video) => !similarVideos.includes(v) && v.id.toString() !== id)
+                        .slice(0, 5 - similarVideos.length);
 
-                setRecommendedVideos(filledRecommendations.slice(0, 5)); // Ensure at most 5 recommendations
+                    setRecommendedVideos([...similarVideos, ...remainingVideos]);
+                }
             })
             .catch((error) => {
                 console.error('Error fetching recommended videos:', error);
             });
-    }, [id, video]);
+    }, [video, id]); // Re-fetch when `video` or `id` changes
 
+    // Fetch comments for the current video
     useEffect(() => {
-        // Fetch comments for the video
         fetch(`http://localhost:8080/api/videos/${id}/comments`)
-            .then(response => {
+            .then((response) => {
                 if (!response.ok) throw new Error('Failed to fetch comments');
                 return response.json();
             })
-            .then(data => {
+            .then((data) => {
                 setComments(data);
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error('Error fetching comments:', error);
             });
-    }, [id]);
+    }, [id]); // Re-fetch when `id` changes
 
     if (loading) return <p>Loading video...</p>;
     if (error) return <p>Error loading video: {error}</p>;
@@ -151,6 +153,7 @@ const VideoPlayer: React.FC = () => {
                 <ul className="recommended-list">
                     {recommendedVideos.map((vid) => (
                         <li key={vid.id} className="recommended-item">
+                            {/* Redirect to the clicked video's player */}
                             <Link to={`/videos/${vid.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                                 <img src={vid.imagePath} alt={vid.title} className="thumbnail" />
                                 <div className="video-info">
