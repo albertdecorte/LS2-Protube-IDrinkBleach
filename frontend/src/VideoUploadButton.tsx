@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import './UploadButton.css'; // Import the CSS file
+import './VideoUploadButton.css'; // Import the CSS file
 
 const UploadButton = () => {
     const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import "./styles/VideoUpload.css";
+import "./VideoUpload.css";
 
 const VideoUpload = () => {
     // State to store form data
