@@ -5,6 +5,7 @@ import com.tecnocampus.LS2.protube_back.ProtubeBackApplication;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.application.services.VideoService;
 import com.tecnocampus.LS2.protube_back.domain.Comment;
+import com.tecnocampus.LS2.protube_back.domain.Video;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -79,5 +80,20 @@ public class VideosController {
     public ResponseEntity<List<VideoDTO.CommentDTO>> getAllCommentsByAuthor(@PathVariable String author) {
         List<VideoDTO.CommentDTO> comments = videoService.getAllCommentsByAuthor(author);
         return ResponseEntity.ok(comments);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<Video> uploadVideo(
+            @RequestBody VideoDTO videoDTO, // JSON payload with video details
+            Principal principal
+    ) {
+        if (videoDTO.getVideoPath() == null || videoDTO.getVideoPath().isEmpty() ||
+                videoDTO.getTitle() == null || videoDTO.getTitle().isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        videoDTO.setUser(principal.getName());
+        Video savedVideo = videoService.addVideo(videoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedVideo);
     }
 }

@@ -124,4 +124,7 @@ public class VideoService {
                         .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(), video.getTitle())))
                 .collect(Collectors.toList());
     }
+
+    public Video addVideo(VideoDTO videoDTO) {
+    }
 }
