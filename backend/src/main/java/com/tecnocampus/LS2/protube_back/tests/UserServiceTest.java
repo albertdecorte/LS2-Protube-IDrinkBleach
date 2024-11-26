@@ -45,7 +45,7 @@ class UserServiceTest {
 
         // Assert that the User object was created correctly and returned
         assertEquals("testUser", createdUser.getUserName());
-        assertEquals("test@gmail.com", createdUser.getGmail());
+        assertEquals("test@gmail.com", createdUser.getEmail());
         assertEquals("password", createdUser.getPassword());
     }
 }
