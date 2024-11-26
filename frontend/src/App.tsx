@@ -5,10 +5,11 @@ import VideoList from './VideoList';
 import VideoPlayer from './VideoPlayer';
 import LoginButton from './assets/LoginButton.svg';
 import axios from 'axios'; // Necessites afegir axios per fer peticions HTTP
-import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import AuthorsOfComments from "./AuthorsOfComments";
 import CommentsByAuthor from "./CommentsByAuthor";
-//import IchigoLogo from './assets/IchigoLogo.svg';
+import VideoUpload from './VideoUpload'; // Import the VideoUpload component
+import UploadButton from './VideoUploadButton'; // Import the UploadButton component
 
 const domain = 'dev-r7hj507hsi3jn34i.us.auth0.com';
 const clientId = 'g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ';
@@ -28,7 +29,7 @@ const AuthButtons = () => {
     };
 
     const handleLogout = () => {
-        logout({returnTo: window.location.origin} as any)
+        logout({ returnTo: window.location.origin } as any);
     };
 
     // Funció per afegir l'usuari a la base de dades si no existeix
@@ -106,7 +107,7 @@ const AuthorButton = () => {
             Authors
         </button>
     );
-}
+};
 
 function App() {
     return (
@@ -129,8 +130,9 @@ function App() {
                             <span className="title-text">  Tube</span>
                         </button>
                         <div className="button-container">
-                            <AuthorButton/>
-                            <AuthButtons/>
+                            <AuthorButton />
+                            <UploadButton /> {/* Add the UploadButton here */}
+                            <AuthButtons />
                         </div>
                     </header>
                     <Routes>
@@ -140,12 +142,12 @@ function App() {
                         <Route path="/videos/:id" element={<VideoPlayer />} />
                         <Route path="/author" element={<AuthorsOfComments />} /> {/* Updated route to /author */}
                         <Route path="/comments/:author" element={<CommentsByAuthor />} />
+                        <Route path="/upload" element={<VideoUpload />} /> {/* New route for video upload */}
                     </Routes>
                 </div>
             </Router>
         </Auth0Provider>
     );
 }
-
 
 export default App;
