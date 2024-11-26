@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @Entity
 @Table(name = "videos")
 public class Video {
@@ -46,7 +48,9 @@ public class Video {
         this.imagePath = "http://localhost:8080/media/" + id + ".webp";
     }
 
-    public Video() {}
+    public Video() {
+        this.id = ThreadLocalRandom.current().nextLong(100, 999999);;
+    }
 
     // Getters i Setters
     public Long getId() { return id; }
