@@ -4,8 +4,11 @@ import Finallogo from './assets/Finallogo.svg';
 import VideoList from './VideoList';
 import VideoPlayer from './VideoPlayer';
 import LoginButton from './assets/LoginButton.svg';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios'; // Necessites afegir axios per fer peticions HTTP
+import {BrowserRouter as Router, Route, Routes, useNavigate} from 'react-router-dom';
+import AuthorsOfComments from "./AuthorsOfComments";
+import CommentsByAuthor from "./CommentsByAuthor";
+//import IchigoLogo from './assets/IchigoLogo.svg';
 
 const domain = 'dev-r7hj507hsi3jn34i.us.auth0.com';
 const clientId = 'g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ';
@@ -83,6 +86,28 @@ const AuthButtons = () => {
     );
 };
 
+const AuthorButton = () => {
+    const navigate = useNavigate();
+
+    return (
+        <button
+            onClick={() => navigate('/author')} // Navigate to the new /author route
+            style={{
+                flex: 2,
+                backgroundColor: 'transparent',
+                border: 'none',
+                color: 'white',
+                fontSize: '1rem',
+                cursor: 'pointer',
+                padding: '0.5rem 1rem',
+                borderRadius: '4px',
+            }}
+        >
+            Authors
+        </button>
+    );
+}
+
 function App() {
     return (
         <Auth0Provider
@@ -104,7 +129,8 @@ function App() {
                             <span className="title-text">  Tube</span>
                         </button>
                         <div className="button-container">
-                            <AuthButtons />
+                            <AuthorButton/>
+                            <AuthButtons/>
                         </div>
                     </header>
                     <Routes>
@@ -112,6 +138,8 @@ function App() {
                         <Route path="/" element={<VideoList />} />
                         {/* Ruta del reproductor de vídeos amb ID dinàmic */}
                         <Route path="/videos/:id" element={<VideoPlayer />} />
+                        <Route path="/author" element={<AuthorsOfComments />} /> {/* Updated route to /author */}
+                        <Route path="/comments/:author" element={<CommentsByAuthor />} />
                     </Routes>
                 </div>
             </Router>
