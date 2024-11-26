@@ -1,0 +1,35 @@
+.authors-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.authors-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Creates 4 equal columns */
+    gap: 16px; /* Adjusts the spacing between items */
+    list-style-type: none; /* Removes default list styling */
+    padding: 0;
+    margin: 0;
+}
+
+.author-item {
+    display: flex;
+    justify-content: center;
+}
+
+.author-button {
+    background-color: #4CAF50; /* Button color */
+    border: none;
+    padding: 10px 20px;
+    color: white;
+    text-align: center;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.author-button:hover {
+    background-color: #45a049; /* Hover effect */
+}
