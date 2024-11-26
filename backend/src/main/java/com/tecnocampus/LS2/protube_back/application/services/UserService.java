@@ -3,6 +3,7 @@ package com.tecnocampus.LS2.protube_back.application.services;
 import com.tecnocampus.LS2.protube_back.application.DTO.UserDTO;
 import com.tecnocampus.LS2.protube_back.domain.User;
 import com.tecnocampus.LS2.protube_back.persistance.UserRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +20,17 @@ public class UserService {
     }
 
     public User addUser(UserDTO user) {
-        User newUser = userDTOToUser(user);
-        return userRepository.save(newUser);
+        try{
+            User newUser = userDTOToUser(user);
+            return userRepository.save(newUser);
+
+        }catch (DataIntegrityViolationException e){
+            return userRepository.findByEmail(user.getEmail());
+        }
+
+    }
+
+    public boolean userExists(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

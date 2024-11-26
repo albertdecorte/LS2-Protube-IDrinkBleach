@@ -11,4 +11,8 @@ public class UserDTO {
     @Id
     String gmailDTO;
     String passwordDTO;
+
+    public String getEmail() {
+        return gmailDTO;
+    }
 }
