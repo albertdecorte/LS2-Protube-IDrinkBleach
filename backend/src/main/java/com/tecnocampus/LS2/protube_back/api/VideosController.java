@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -58,7 +59,13 @@ public class VideosController {
         return ResponseEntity.ok(comments);
     }
     @PostMapping("/{videoId}/comments")
-    public ResponseEntity<Comment> addCommentToVideo(@PathVariable Long videoId, @RequestBody Comment comment) {
+    public ResponseEntity<Comment> addCommentToVideo(
+            @PathVariable Long videoId,
+            @RequestBody Comment comment,
+            Principal principal // Obtindrà l'usuari autenticat
+    ) {
+        String username = principal.getName(); // Nom d'usuari des del context d'autenticació
+        comment.setAuthor(username); // Assignar l'usuari com a autor del comentari
         Comment savedComment = videoService.addCommentToVideo(videoId, comment);
         return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
