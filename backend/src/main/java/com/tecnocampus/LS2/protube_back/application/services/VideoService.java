@@ -2,11 +2,13 @@ package com.tecnocampus.LS2.protube_back.application.services;
 
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.domain.Comment;
+import com.tecnocampus.LS2.protube_back.domain.Meta;
 import com.tecnocampus.LS2.protube_back.domain.Video;
 import com.tecnocampus.LS2.protube_back.persistance.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
@@ -126,5 +128,21 @@ public class VideoService {
     }
 
     public Video addVideo(VideoDTO videoDTO) {
+        Video video = new Video();
+        video.setVideoPath(videoDTO.getVideoPath());
+        video.setTitle(videoDTO.getTitle());
+        video.setUserName(videoDTO.getUser());
+
+        // Handle optional metadata
+        Meta meta = new Meta();
+        meta.setDescription(videoDTO.getDescription());
+        meta.setCategories(videoDTO.getCategories() != null ? videoDTO.getCategories() : new ArrayList<>());
+        meta.setTags(videoDTO.getTags() != null ? videoDTO.getTags() : new ArrayList<>());
+
+        meta.setComments(new ArrayList<>()); // Empty comment list for new videos
+        video.setMeta(meta);
+
+        videoRepository.save(video);
+        return video;
     }
 }

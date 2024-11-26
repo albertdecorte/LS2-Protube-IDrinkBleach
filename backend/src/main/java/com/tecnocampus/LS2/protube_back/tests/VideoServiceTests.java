@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class VideoServiceTests {
@@ -62,5 +61,22 @@ class VideoServiceTests {
 
         // Es llança una excepció si no es troba el vídeo
         assertThrows(IllegalArgumentException.class, () -> videoService.getVideoById(1L));
+    }
+
+    @Test
+    public void testAddVideo() {
+        VideoDTO videoDTO = new VideoDTO();
+        videoDTO.setVideoPath("uploads/video.mp4");
+        videoDTO.setTitle("Test Video");
+        videoDTO.setDescription("A sample description");
+        videoDTO.setCategories(List.of("Category1", "Category2"));
+        videoDTO.setTags(List.of("tag1", "tag2"));
+        videoDTO.setUser("testUser");
+
+        Video savedVideo = videoService.addVideo(videoDTO);
+
+        assertNotNull(savedVideo.getId());
+        assertEquals("Test Video", savedVideo.getTitle());
+        assertEquals("testUser", savedVideo.getUserName());
     }
 }
