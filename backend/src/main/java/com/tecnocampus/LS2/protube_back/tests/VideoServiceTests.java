@@ -10,6 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,9 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@Transactional
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.ANY)
 class VideoServiceTests {
 
     @InjectMocks
@@ -66,17 +72,17 @@ class VideoServiceTests {
     @Test
     public void testAddVideo() {
         VideoDTO videoDTO = new VideoDTO();
-        videoDTO.setVideoPath("uploads/video.mp4");
+        videoDTO.setVideoPath("http://localhost:8080/media/3.mp4");
         videoDTO.setTitle("Test Video");
-        videoDTO.setDescription("A sample description");
+        videoDTO.setDescription("Description");
         videoDTO.setCategories(List.of("Category1", "Category2"));
         videoDTO.setTags(List.of("tag1", "tag2"));
-        videoDTO.setUser("testUser");
+        videoDTO.setUser("Fictional User 1");
 
         Video savedVideo = videoService.addVideo(videoDTO);
 
         assertNotNull(savedVideo.getId());
         assertEquals("Test Video", savedVideo.getTitle());
-        assertEquals("testUser", savedVideo.getUserName());
+        assertEquals("Fictional User 1", savedVideo.getUserName());
     }
 }
