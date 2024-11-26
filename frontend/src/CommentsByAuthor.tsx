@@ -17,7 +17,7 @@ const CommentsByAuthor: React.FC = () => {
     useEffect(() => {
         const fetchCommentsByAuthor = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/comments/author/${author}`);
+                const response = await fetch(`http://localhost:8080/api/videos/comments/author/${author}`);
                 const contentType = response.headers.get('content-type');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
