@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -105,5 +106,22 @@ public class VideoService {
         video.getMeta().getComments().add(comment);
         videoRepository.save(video);
         return comment;
+    }
+
+    public Set<String> getAllAuthors() {
+        return videoRepository.findAll().stream()
+                .filter(video -> video.getMeta() != null && video.getMeta().getComments() != null)
+                .flatMap(video -> video.getMeta().getComments().stream())
+                .map(Comment::getAuthor)
+                .collect(Collectors.toSet());
+    }
+
+    public List<VideoDTO.CommentDTO> getAllCommentsByAuthor(String author) {
+        return videoRepository.findAll().stream()
+                .filter(video -> video.getMeta() != null && video.getMeta().getComments() != null)
+                .flatMap(video -> video.getMeta().getComments().stream()
+                        .filter(comment -> comment.getAuthor().equalsIgnoreCase(author))
+                        .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(), video.getTitle())))
+                .collect(Collectors.toList());
     }
 }
