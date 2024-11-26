@@ -1,6 +1,7 @@
 import './App.css';
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import Finallogo from './assets/Finallogo.svg';
+import IchigoAuthors from './assets/IchigoAuthors.svg';
 import VideoList from './VideoList';
 import VideoPlayer from './VideoPlayer';
 import LoginButton from './assets/LoginButton.svg';
@@ -10,6 +11,7 @@ import AuthorsOfComments from "./AuthorsOfComments";
 import CommentsByAuthor from "./CommentsByAuthor";
 import VideoUpload from './VideoUpload'; // Import the VideoUpload component
 import UploadButton from './VideoUploadButton'; // Import the UploadButton component
+
 
 const domain = 'dev-r7hj507hsi3jn34i.us.auth0.com';
 const clientId = 'g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ';
@@ -92,19 +94,19 @@ const AuthorButton = () => {
 
     return (
         <button
-            onClick={() => navigate('/author')} // Navigate to the new /author route
-            style={{
-                flex: 2,
-                backgroundColor: 'transparent',
-                border: 'none',
-                color: 'white',
-                fontSize: '1rem',
-                cursor: 'pointer',
-                padding: '0.5rem 1rem',
-                borderRadius: '4px',
-            }}
-        >
-            Authors
+            className= "Author-Button"
+            onClick={() => navigate('/author')}style={{
+            flex: 2,
+            alignItems : "center",
+            backgroundColor: 'transparent',
+            border: 'none',
+            color: 'white',
+            fontSize: '1rem',
+            cursor: 'pointer',
+            padding: '1rem',
+            borderRadius: '4px',
+        }}>
+            <img src={IchigoAuthors} className="ichigo-icon" alt="logo" />
         </button>
     );
 };

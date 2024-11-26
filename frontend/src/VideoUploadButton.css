@@ -7,6 +7,8 @@
     cursor: pointer;
     padding: 0.5rem 1rem;
     border-radius: 4px;
+    width: 15vmin;
+    height: 15vmin;
 }
 
 .upload-button:hover {

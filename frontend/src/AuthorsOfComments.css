@@ -8,7 +8,7 @@
 
 .authors-list {
     display: grid;
-    grid-template-columns: repeat(6, 1fr); /* Creates 4 equal columns */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Creates responsive columns */
     gap: 16px; /* Adjusts the spacing between items */
     list-style-type: none; /* Removes default list styling */
     padding: 0;
@@ -19,7 +19,7 @@
     display: flex;
     justify-content: center;
     align-items: center; /* Centers content vertically */
-    height: 200px; /* Ensures consistent height for each box */
+    height: 75px; /* Ensures consistent height for each box */
     background-color: #333; /* Optional: background color for each item */
     border-radius: 8px; /* Optional: rounded corners for each box */
     box-sizing: border-box; /* Ensures padding and borders are included in item size */

@@ -22,11 +22,12 @@
   font-size: calc(15px + 2vmin);
   color: rgb(255, 255, 255);
   padding: 10px;
-  position: relative;
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
   z-index: 1;
+  height: 200px;
+  position: relative;
 }
 
 .App-button {
@@ -43,7 +44,6 @@
 
 .App-header:before,
 .App-header:after,
-
 .new-diagonal-line {
   content: "";
   position: absolute;
@@ -113,11 +113,13 @@
 }
 
 .button-icon {
-  width: 500px;
-  height: 200px;
+  display: flex;
+  align-items: flex-end;
+  width: 50vmin;
+  height: 30vmin;
   margin-top: 8px;
   margin-right: 8px;
-  Color: #16181c;
+  color: #16181c;
 }
 
 .auth-container {
@@ -125,6 +127,31 @@
   align-items: center;
   background-color: transparent;
   gap: 10px;
+}
+
+.ichigo-icon {
+  flex: 2;
+  background-color: transparent;
+  position: center;
+  width: 30vmin; /* Adjust the width of the image */
+  height: 30vmin; /* Adjust the height of the image */
+}
+
+.title-text1 {
+  background-color: transparent;
+  flex: 1;
+}
+
+.Author-Button {
+  display: flex;
+  align-items: center;
+  margin-left: 25px;
+  background-color: transparent;
+  border: none;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  z-index: 2;
 }
 
 @keyframes App-logo-spin {
@@ -135,4 +162,3 @@
     transform: rotate(360deg);
   }
 }
-  
