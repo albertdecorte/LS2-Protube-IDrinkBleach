@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import CommentsSection from './CommentsSection';
 
 interface CommentDTO {
     text: string;
@@ -16,15 +17,23 @@ const CommentsByAuthor: React.FC = () => {
     useEffect(() => {
         const fetchCommentsByAuthor = async () => {
             try {
-                const response = await fetch(`/api/videos/comments/${author}`);
+                const response = await fetch(`http://localhost:8080/comments/author/${author}`);
+                const contentType = response.headers.get('content-type');
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                const data = await response.json();
+                if (contentType && contentType.indexOf('application/json') === -1) {
+                    throw new Error('Response is not JSON');
+                }
+                const data: CommentDTO[] = await response.json();
                 setComments(data);
-            } catch (error) {
-                setError('Error fetching comments by author');
-                console.error('Error fetching comments by author:', error);
+            } catch (err) {
+                if (err instanceof Error) {
+                    setError(err.message);
+                } else {
+                    setError('An unknown error occurred');
+                }
+                console.error('Error fetching comments by author:', err);
             } finally {
                 setLoading(false);
             }
@@ -44,17 +53,7 @@ const CommentsByAuthor: React.FC = () => {
     return (
         <div>
             <h1>Comments by {author}</h1>
-            {comments.length > 0 ? (
-                <ul>
-                    {comments.map((comment, index) => (
-                        <li key={index}>
-                            <strong>{comment.videoTitle}</strong>: {comment.text}
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <div>No comments found for this author.</div>
-            )}
+            <CommentsSection comments={comments} />
         </div>
     );
 };

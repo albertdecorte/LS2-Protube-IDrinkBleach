@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import './AuthorsOfComments.css';
 
 // Define the component
 const AuthorButtons: React.FC = () => {
@@ -40,12 +42,14 @@ const AuthorButtons: React.FC = () => {
     // Render buttons for each author
     return (
         <div className="authors-container">
+            <h1>Comments Authors:</h1>
+            {error && <p>Error: {error}</p>}
             <ul className="authors-list">
                 {authors.map((author, index) => (
                     <li key={index} className="author-item">
-                        <button className="author-button">
+                        <Link to={`/comments/${author}`} className="author-button">
                             {author}
-                        </button>
+                        </Link>
                     </li>
                 ))}
             </ul>

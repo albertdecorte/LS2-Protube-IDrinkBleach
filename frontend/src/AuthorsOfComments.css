@@ -1,12 +1,14 @@
 .authors-container {
-    display: flex;
-    justify-content: center;
     padding: 20px;
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: #292929;
+    color: #ffffff;
 }
 
 .authors-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* Creates 4 equal columns */
+    grid-template-columns: repeat(6, 1fr); /* Creates 4 equal columns */
     gap: 16px; /* Adjusts the spacing between items */
     list-style-type: none; /* Removes default list styling */
     padding: 0;
@@ -16,12 +18,20 @@
 .author-item {
     display: flex;
     justify-content: center;
+    align-items: center; /* Centers content vertically */
+    height: 200px; /* Ensures consistent height for each box */
+    background-color: #333; /* Optional: background color for each item */
+    border-radius: 8px; /* Optional: rounded corners for each box */
+    box-sizing: border-box; /* Ensures padding and borders are included in item size */
+    padding: 10px; /* Optional: adds some padding inside each author item */
 }
 
 .author-button {
-    background-color: #4CAF50; /* Button color */
+    background-color: #16181c; /* Button color */
     border: none;
-    padding: 10px 20px;
+    padding: 10px 0; /* Adjusted to make padding consistent */
+    height: 100%;
+    width: 100%; /* Makes the button take almost the full width of the container */
     color: white;
     text-align: center;
     font-size: 16px;
