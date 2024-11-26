@@ -5,12 +5,14 @@ import com.tecnocampus.LS2.protube_back.ProtubeBackApplication;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.application.services.VideoService;
 import com.tecnocampus.LS2.protube_back.domain.Comment;
+import com.tecnocampus.LS2.protube_back.domain.Video;
 import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Set;
 
@@ -59,7 +61,13 @@ public class VideosController {
         return ResponseEntity.ok(comments);
     }
     @PostMapping("/{videoId}/comments")
-    public ResponseEntity<Comment> addCommentToVideo(@PathVariable Long videoId, @RequestBody Comment comment) {
+    public ResponseEntity<Comment> addCommentToVideo(
+            @PathVariable Long videoId,
+            @RequestBody Comment comment,
+            Principal principal // Obtindrà l'usuari autenticat
+    ) {
+        String username = principal.getName(); // Nom d'usuari des del context d'autenticació
+        comment.setAuthor(username); // Assignar l'usuari com a autor del comentari
         Comment savedComment = videoService.addCommentToVideo(videoId, comment);
         return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
@@ -72,5 +80,20 @@ public class VideosController {
     public ResponseEntity<List<VideoDTO.CommentDTO>> getAllCommentsByAuthor(@PathVariable String author) {
         List<VideoDTO.CommentDTO> comments = videoService.getAllCommentsByAuthor(author);
         return ResponseEntity.ok(comments);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<Video> uploadVideo(
+            @RequestBody VideoDTO videoDTO, // JSON payload with video details
+            Principal principal
+    ) {
+        if (videoDTO.getVideoPath() == null || videoDTO.getVideoPath().isEmpty() ||
+                videoDTO.getTitle() == null || videoDTO.getTitle().isEmpty()) {
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        videoDTO.setUser(principal.getName());
+        Video savedVideo = videoService.addVideo(videoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedVideo);
     }
 }
