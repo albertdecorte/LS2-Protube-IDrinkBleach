@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/videos")
@@ -68,5 +69,15 @@ public class VideosController {
         comment.setAuthor(username); // Assignar l'usuari com a autor del comentari
         Comment savedComment = videoService.addCommentToVideo(videoId, comment);
         return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
+    }
+    @GetMapping("/comments/authors")
+    public ResponseEntity<Set<String>> getAllAuthors() {
+        Set<String> authors = videoService.getAllAuthors();
+        return ResponseEntity.ok(authors);
+    }
+    @GetMapping("/comments/author/{author}")
+    public ResponseEntity<List<VideoDTO.CommentDTO>> getAllCommentsByAuthor(@PathVariable String author) {
+        List<VideoDTO.CommentDTO> comments = videoService.getAllCommentsByAuthor(author);
+        return ResponseEntity.ok(comments);
     }
 }
