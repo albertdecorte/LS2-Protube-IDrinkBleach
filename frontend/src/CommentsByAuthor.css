@@ -5,11 +5,19 @@ body {
 }
 
 .comments-by-author {
+    display: flex;
+    flex-direction: column;
+    background-color: #1e1e1e;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
     margin: 20px;
+    height: available;
 }
 
 h1 {
     color: #ffffff;
+    margin-bottom: 20px;
 }
 
 /* Styling for the comments section */
@@ -22,13 +30,14 @@ h1 {
 .comment-box {
     display: flex;
     background-color: #1e1e1e;
+    align-items: center;
     border-radius: 10px;
     padding: 10px;
     align-items: center;
 }
 
 .thumbnail img {
-    width: 100px;
+    width: 70px;
     height: 100px;
     border-radius: 10px;
     margin-right: 10px;
