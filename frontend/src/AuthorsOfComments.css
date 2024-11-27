@@ -1,45 +1,42 @@
 .authors-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1e1e1e;
+    color: white;
     padding: 20px;
-    max-width: 100%;
-    margin: 0 auto;
-    background-color: #292929;
-    color: #ffffff;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
 }
 
 .authors-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* Creates responsive columns */
-    gap: 16px; /* Adjusts the spacing between items */
-    list-style-type: none; /* Removes default list styling */
+    list-style-type: none;
     padding: 0;
-    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .author-item {
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Centers content vertically */
-    height: 75px; /* Ensures consistent height for each box */
-    background-color: #333; /* Optional: background color for each item */
-    border-radius: 8px; /* Optional: rounded corners for each box */
-    box-sizing: border-box; /* Ensures padding and borders are included in item size */
-    padding: 10px; /* Optional: adds some padding inside each author item */
+    margin: 10px;
 }
 
 .author-button {
-    background-color: #16181c; /* Button color */
-    border: none;
-    padding: 10px 0; /* Adjusted to make padding consistent */
-    height: 100%;
-    width: 100%; /* Makes the button take almost the full width of the container */
+    display: block;
+    padding: 15px 30px; /* Increased padding for wider buttons */
+    background-color: #333;
     color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
     text-align: center;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    width: 200px; /* Increased width for wider buttons */
 }
 
 .author-button:hover {
-    background-color: #45a049; /* Hover effect */
+    background-color: #555;
 }
