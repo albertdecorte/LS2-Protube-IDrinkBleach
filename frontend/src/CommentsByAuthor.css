@@ -1,44 +1,45 @@
-/* Ensure the background color is black */
+/* General styling for the dark theme */
+body {
+    background-color: #121212;
+    color: #ffffff;
+}
+
 .comments-by-author {
-    padding: 20px;
-    background-color: #000; /* Set background color to black */
-    color: #fff; /* Text color to white for better contrast */
+    margin: 20px;
 }
 
-.comments-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+h1 {
+    color: #ffffff;
 }
 
-.comment-item {
+/* Styling for the comments section */
+.comments-section {
     display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 10px;
+    flex-direction: column;
+    gap: 20px;
 }
 
-.video-info {
+.comment-box {
     display: flex;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 10px;
     align-items: center;
-    text-decoration: none;
-    color: inherit;
-    margin-right: 20px;
 }
 
-.thumbnail {
+.thumbnail img {
     width: 100px;
-    height: 56px;
-    object-fit: cover;
-    border-radius: 4px;
+    height: 100px;
+    border-radius: 10px;
     margin-right: 10px;
 }
 
-.video-title {
-    display: none; /* Hide the video title */
+.comment-content {
+    display: flex;
+    flex-direction: column;
 }
 
-.comment-content {
-    flex-grow: 1;
+.comment-content p {
+    margin: 0;
+    color: #ffffff;
 }
