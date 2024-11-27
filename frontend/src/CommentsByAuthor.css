@@ -1,25 +1,23 @@
-/* Ensure the background color is black */
 .comments-by-author {
     padding: 20px;
-    background-color: #000; /* Set background color to black */
-    color: #fff; /* Text color to white for better contrast */
+    background-color: #292929; /* Dark mode */
+    color: #fff;
 }
 
-.comments-list {
+.comments-by-author .comments-list {
     list-style: none;
     padding: 0;
-    margin: 0;
 }
 
-.comment-item {
+.comments-by-author .comment-item {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid #444; /* Darker border for dark mode */
     padding-bottom: 10px;
 }
 
-.video-info {
+.comments-by-author .video-info {
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -27,7 +25,7 @@
     margin-right: 20px;
 }
 
-.thumbnail {
+.comments-by-author .thumbnail {
     width: 100px;
     height: 56px;
     object-fit: cover;
@@ -35,10 +33,31 @@
     margin-right: 10px;
 }
 
-.video-title {
-    display: none; /* Hide the video title */
+.comments-by-author .video-title {
+    font-weight: bold;
+    color: #fff; /* Ensure it stands out in dark mode */
 }
 
-.comment-content {
+.comments-by-author .comment-content {
     flex-grow: 1;
+}
+
+.comments-by-author h1 {
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.comments-by-author .comment-content p {
+    margin: 4px 0;
+    color: #ccc; /* Light gray text for comments */
+}
+
+.comments-by-author .comment-content a {
+    color: #1e90ff; /* Link color for video titles */
+    text-decoration: none;
+}
+
+.comments-by-author .comment-content a:hover {
+    text-decoration: underline;
 }
