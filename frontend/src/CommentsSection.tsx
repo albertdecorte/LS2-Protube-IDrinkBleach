@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './CommentsByAuthor.css';
@@ -89,7 +90,7 @@ const CommentsByAuthor: React.FC = () => {
                         </Link>
                         {/* Comment Text */}
                         <div className="comment-content">
-                            <p><strong>{comment.author}:</strong> {comment.text}</p>
+                            <p>{comment.text}</p>
                         </div>
                     </li>
                 ))}
