@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
 import './VideoPlayer.css';
 
 interface Video {
@@ -21,6 +22,7 @@ interface Comment {
 
 const VideoPlayer: React.FC = () => {
     const { id } = useParams<{ id: string }>();
+    const { isAuthenticated, user } = useAuth0(); // Obtenim l'usuari autenticat
     const [video, setVideo] = useState<Video | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -28,14 +30,15 @@ const VideoPlayer: React.FC = () => {
     const [recommendedVideos, setRecommendedVideos] = useState<Video[]>([]);
     const [comments, setComments] = useState<Comment[]>([]);
     const [visibleVideos, setVisibleVideos] = useState(0);
-    const navigate = useNavigate(); // For programmatic navigation
+    const [newComment, setNewComment] = useState("");
+    const navigate = useNavigate();
 
-    // Calculate visible videos based on screen height
+    // Calcular els vídeos visibles basant-se en l'altura de la pantalla
     useEffect(() => {
         const updateVisibleVideos = () => {
-            const videoItemHeight = 150; // Estimated height per recommended video item (in pixels)
-            const screenHeight = window.innerHeight; // Get window height
-            setVisibleVideos(Math.floor(screenHeight / videoItemHeight)); // Calculate number of videos
+            const videoItemHeight = 150; // Alçada estimada per vídeo recomanat
+            const screenHeight = window.innerHeight; // Alçada de la finestra
+            setVisibleVideos(Math.floor(screenHeight / videoItemHeight)); // Càlcul
         };
 
         updateVisibleVideos();
@@ -46,11 +49,11 @@ const VideoPlayer: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        // Fetch video details
-        setLoading(true); // Reset loading state
+        // Recuperar els detalls del vídeo
+        setLoading(true);
         fetch(`http://localhost:8080/api/videos/${id}`)
             .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch video');
+                if (!response.ok) throw new Error('Error recuperant el vídeo');
                 return response.json();
             })
             .then(data => {
@@ -58,84 +61,104 @@ const VideoPlayer: React.FC = () => {
                 setLoading(false);
             })
             .catch(error => {
-                console.error('Error fetching video:', error);
+                console.error('Error carregant el vídeo:', error);
                 setError(error.message);
                 setLoading(false);
             });
-    }, [id]); // Refetch video whenever the ID changes
+    }, [id]);
 
     useEffect(() => {
-        // Fetch recommended videos based on categories
-        if (video) {
-            fetch(`http://localhost:8080/api/videos`)
-                .then(response => {
-                    if (!response.ok) throw new Error('Failed to fetch videos');
-                    return response.json();
-                })
-                .then(data => {
-                    // Filter videos by the same category
-                    const sameCategoryVideos = data.filter((v: Video) =>
-                        v.categories.some(category => video.categories.includes(category)) && v.id !== video.id
-                    );
-
-                    // Add random videos to fill the list
-                    const remainingVideos = data.filter(
-                        (v: Video) => v.id !== video.id && !sameCategoryVideos.includes(v)
-                    );
-
-                    const randomVideos = remainingVideos.sort(() => 0.5 - Math.random());
-
-                    // Combine same-category videos and random ones, remove duplicates
-                    const allVideos = [...sameCategoryVideos, ...randomVideos].filter(
-                        (v, index, self) => self.findIndex(vid => vid.id === v.id) === index
-                    );
-
-                    // Limit to the number of visible videos
-                    setRecommendedVideos(allVideos.slice(0, visibleVideos));
-                })
-                .catch(error => {
-                    console.error('Error fetching recommended videos:', error);
-                });
-        }
-    }, [video, visibleVideos]);
-
-    useEffect(() => {
-        // Fetch comments for the video
+        // Recuperar els comentaris del vídeo
         fetch(`http://localhost:8080/api/videos/${id}/comments`)
             .then(response => {
-                if (!response.ok) throw new Error('Failed to fetch comments');
+                if (!response.ok) throw new Error('Error recuperant els comentaris');
                 return response.json();
             })
             .then(data => {
                 setComments(data);
             })
             .catch(error => {
-                console.error('Error fetching comments:', error);
+                console.error('Error recuperant comentaris:', error);
             });
     }, [id]);
 
-    if (loading) return <p>Loading video...</p>;
-    if (error) return <p>Error loading video: {error}</p>;
-    if (!video) return <p>Video not found.</p>;
+    useEffect(() => {
+        // Recuperar vídeos recomanats basats en categories
+        if (video) {
+            fetch(`http://localhost:8080/api/videos`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Error recuperant vídeos');
+                    return response.json();
+                })
+                .then(data => {
+                    const sameCategoryVideos = data.filter((v: Video) =>
+                        v.categories.some(category => video.categories.includes(category)) && v.id !== video.id
+                    );
+                    const remainingVideos = data.filter(
+                        (v: Video) => v.id !== video.id && !sameCategoryVideos.includes(v)
+                    );
+                    const randomVideos = remainingVideos.sort(() => 0.5 - Math.random());
+                    const allVideos = [...sameCategoryVideos, ...randomVideos].filter(
+                        (v, index, self) => self.findIndex(vid => vid.id === v.id) === index
+                    );
+                    setRecommendedVideos(allVideos.slice(0, visibleVideos));
+                })
+                .catch(error => {
+                    console.error('Error recuperant vídeos recomanats:', error);
+                });
+        }
+    }, [video, visibleVideos]);
+
+    if (loading) return <p>Carregant vídeo...</p>;
+    if (error) return <p>Error carregant vídeo: {error}</p>;
+    if (!video) return <p>Vídeo no trobat.</p>;
 
     const handleToggleExpand = () => {
         setExpanded(!expanded);
     };
 
     const handleRecommendedVideoClick = (videoId: number) => {
-        navigate(`/videos/${videoId}`); // Programmatic navigation to the selected video
+        navigate(`/videos/${videoId}`);
+    };
+
+    const handleAddComment = () => {
+        if (!isAuthenticated) {
+            alert("Has d'estar autenticat per afegir comentaris.");
+            return;
+        }
+
+        const comment = {
+            text: newComment,
+            author: user?.name || "Usuari desconegut", // Utilitzem el nom de l'usuari autenticat
+            videoId: parseInt(id!)
+        };
+
+        fetch(`http://localhost:8080/api/videos/${id}/comments`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(comment)
+        })
+            .then((response) => {
+                if (!response.ok) throw new Error("No s'ha pogut afegir el comentari");
+                return response.json();
+            })
+            .then((newComment) => {
+                setComments((prevComments) => [...prevComments, newComment]);
+                setNewComment(""); // Resetejar el formulari
+            })
+            .catch((error) => console.error("Error:", error));
     };
 
     return (
         <div id="video-player-page">
-            {/* Main video player section */}
             <div id="video-player-container">
                 <video controls>
                     <source src={video.videoPath} type="video/mp4" />
                 </video>
                 <h1 id="video-title">{video.title}</h1>
-                <p id="video-user">By {video.user}</p>
-                {/* Clickable Description Box */}
+                <p id="video-user">Per {video.user}</p>
                 <div id="description-box" className={expanded ? 'expanded' : ''} onClick={handleToggleExpand}>
                     <p className="video-description">
                         {expanded ? video.description : `${video.description.slice(0, 100)}...`}
@@ -143,26 +166,25 @@ const VideoPlayer: React.FC = () => {
                     {expanded && (
                         <>
                             <p className="tags">
-                                <strong>Tags:</strong>{' '}
+                                <strong>Tags:</strong>{" "}
                                 {video.tags.map((tag, index) => (
                                     <span key={index} className="tag">#{tag}</span>
                                 ))}
                             </p>
                             <p className="categories">
-                                <strong>Categories:</strong>{' '}
+                                <strong>Categories:</strong>{" "}
                                 {video.categories.map((category, index) => (
                                     <span key={index} className="category">#{category}</span>
                                 ))}
                             </p>
                         </>
                     )}
-                    <span className="toggle-button">{expanded ? 'Show Less' : 'Show More'}</span>
+                    <span className="toggle-button">{expanded ? 'Mostra menys' : 'Mostra més'}</span>
                 </div>
-                {/* Comments section */}
                 <div id="comments-section">
-                    <h2>Comments</h2>
+                    <h2>Comentaris</h2>
                     {comments.length === 0 ? (
-                        <p>No comments yet. Be the first to comment!</p>
+                        <p>No hi ha comentaris encara. Sigues el primer!</p>
                     ) : (
                         <ul className="comments-list">
                             {comments.map((comment, index) => (
@@ -172,12 +194,23 @@ const VideoPlayer: React.FC = () => {
                             ))}
                         </ul>
                     )}
+                    <form
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            handleAddComment();
+                        }}
+                    >
+                        <textarea
+                            placeholder="Escriu el teu comentari..."
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                        />
+                        <button type="submit">Enviar</button>
+                    </form>
                 </div>
             </div>
-
-            {/* Recommended videos section */}
             <div id="recommended-videos">
-                <h2>Recommended Videos</h2>
+                <h2>Vídeos recomanats</h2>
                 <ul className="recommended-list">
                     {recommendedVideos.map((vid) => (
                         <li
@@ -188,7 +221,7 @@ const VideoPlayer: React.FC = () => {
                             <img src={vid.imagePath} alt={vid.title} className="thumbnail" />
                             <div className="video-info">
                                 <span className="video-title">{vid.title}</span>
-                                <span className="video-user">By {vid.user}</span>
+                                <span className="video-user">Per {vid.user}</span>
                             </div>
                         </li>
                     ))}

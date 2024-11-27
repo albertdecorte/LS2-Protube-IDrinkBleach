@@ -104,7 +104,14 @@ public class VideoService {
                 .orElseThrow(() -> new IllegalArgumentException("Video not found with id: " + videoId));
     }
     public Comment addCommentToVideo(Long videoId, Comment comment) {
-        Video video = videoRepository.findById(videoId).orElseThrow(() -> new RuntimeException("Vídeo no trobat"));
+        Video video = videoRepository.findById(videoId)
+                .orElseThrow(() -> new RuntimeException("Vídeo no trobat"));
+
+        // Inicialitzar la llista de comentaris si està nul·la
+        if (video.getMeta().getComments() == null) {
+            video.getMeta().setComments(new ArrayList<>());
+        }
+
         video.getMeta().getComments().add(comment);
         videoRepository.save(video);
         return comment;
