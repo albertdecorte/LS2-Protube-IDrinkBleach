@@ -51,7 +51,7 @@ public class VideoService {
                                 System.out.println("Checking comment author: " + comment.getAuthor());
                                 return author.equalsIgnoreCase(comment.getAuthor());
                             })
-                            .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(),comment.getVideoTitle()))
+                            .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(),comment.getVideoId()))
                             .collect(Collectors.toList());
 
                     if (!authorComments.isEmpty()) {
@@ -92,14 +92,14 @@ public class VideoService {
                         .map(comment -> new VideoDTO.CommentDTO(
                                 comment.getText(),
                                 comment.getAuthor(),
-                                video.getTitle()))) // Incluimos el título del video
+                                video.getId()))) // Incluimos el título del video
                 .sorted(Comparator.comparing(VideoDTO.CommentDTO::getAuthor, String.CASE_INSENSITIVE_ORDER))
                 .collect(Collectors.toList());
     }
     public List<VideoDTO.CommentDTO> getAllCommentsForVideo(Long videoId) {
         return videoRepository.findById(videoId)
                 .map(video -> video.getMeta().getComments().stream()
-                        .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(), video.getTitle()))
+                        .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(), video.getId()))
                         .collect(Collectors.toList()))
                 .orElseThrow(() -> new IllegalArgumentException("Video not found with id: " + videoId));
     }
@@ -123,7 +123,7 @@ public class VideoService {
                 .filter(video -> video.getMeta() != null && video.getMeta().getComments() != null)
                 .flatMap(video -> video.getMeta().getComments().stream()
                         .filter(comment -> comment.getAuthor().equalsIgnoreCase(author))
-                        .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(), video.getTitle())))
+                        .map(comment -> new VideoDTO.CommentDTO(comment.getText(), comment.getAuthor(), video.getId())))
                 .collect(Collectors.toList());
     }
 

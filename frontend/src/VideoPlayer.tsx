@@ -16,7 +16,7 @@ interface Video {
 interface Comment {
     text: string;
     author: string;
-    videoTitle: string;
+    videoId: number;
 }
 
 const VideoPlayer: React.FC = () => {

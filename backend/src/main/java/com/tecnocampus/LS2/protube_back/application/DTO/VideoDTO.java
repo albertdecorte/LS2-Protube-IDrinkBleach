@@ -49,12 +49,14 @@ public class VideoDTO {
     public static class CommentDTO {
         private String text;
         private String author;
-        private String videoTitle;
+        //private String videoTitle;
+        private Long videoId;
 
-        public CommentDTO(String text, String author,String videoTitle) {
+        public CommentDTO(String text, String author, Long videoId) {
             this.text = text;
             this.author = author;
-            this.videoTitle=videoTitle;
+            //this.videoTitle=videoTitle;
+            this.videoId = videoId;
         }
 
         public CommentDTO(Comment comment) {
@@ -62,6 +64,7 @@ public class VideoDTO {
             this.author = comment.getAuthor();
         }
 
+        /*
         public String getVideoTitle() {
             return videoTitle;
         }
@@ -69,5 +72,7 @@ public class VideoDTO {
         public void setVideoTitle(String videoTitle) {
             this.videoTitle = videoTitle;
         }
+
+         */
     }
 }
