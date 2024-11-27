@@ -89,6 +89,13 @@ public class VideosController {
         return ResponseEntity.ok(comments);
     }
 
+    @GetMapping("/videos/authors")
+    public ResponseEntity<Set<String>> getAllVideoAuthors() {
+        Set<String> authors = videoService.getAllVideoAuthors();
+        return ResponseEntity.ok(authors);
+    }
+
+
     @GetMapping("/author/{author}/videos")
     public ResponseEntity<List<VideoDTO>> getAllVideosByAuthor(@PathVariable String author) {
         List<VideoDTO> videos = videoService.getAllVideosByAuthor(author);

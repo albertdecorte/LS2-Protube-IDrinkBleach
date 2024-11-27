@@ -1,0 +1,48 @@
+.authors-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #1e1e1e;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.authors-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.author-item {
+    margin: 10px;
+}
+
+.author-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 20px; /* Adjusted padding */
+    background-color: #333;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    text-align: center;
+    width: 200px; /* Fixed width */
+    height: 50px; /* Fixed height to ensure uniformity */
+    white-space: nowrap; /* Prevent text from breaking into a new line */
+    overflow: hidden; /* Hide overflowing text */
+    text-overflow: ellipsis; /* Add ellipsis for overflow text */
+}
+
+.author-button:hover {
+    background-color: #555;
+}

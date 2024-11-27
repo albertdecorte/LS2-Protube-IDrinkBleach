@@ -159,4 +159,11 @@ public class VideoService {
         videoRepository.save(video);
         return video;
     }
+
+    public Set<String> getAllVideoAuthors() {
+        return videoRepository.findAll().stream()
+                .filter(video -> video.getUserName() != null)
+                .map(Video::getUserName)
+                .collect(Collectors.toSet());
+    }
 }
