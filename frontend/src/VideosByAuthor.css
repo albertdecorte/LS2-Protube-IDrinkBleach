@@ -1,0 +1,48 @@
+.videos-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.videos-section__list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.videos-section__item {
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    width: 200px;
+    overflow: hidden;
+    text-align: center;
+    background-color: #fff;
+}
+
+.videos-section__thumbnail {
+    width: 100%;
+    height: auto;
+}
+
+.videos-section__title {
+    font-weight: bold;
+    font-size: 1rem;
+    margin: 5px 0;
+    text-decoration: none;
+    color: #333;
+}
+
+.videos-section__title:hover {
+    color: #007bff;
+}
+
+.videos-section__author {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 10px;
+}
