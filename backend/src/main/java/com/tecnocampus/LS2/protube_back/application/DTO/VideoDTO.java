@@ -1,6 +1,7 @@
 package com.tecnocampus.LS2.protube_back.application.DTO;
 
 import com.tecnocampus.LS2.protube_back.domain.Comment;
+import com.tecnocampus.LS2.protube_back.domain.Video;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -39,6 +40,20 @@ public class VideoDTO {
         this.tags = tags;
         this.videoPath = videoPath;
         this.imagePath = imagePath;
+    }
+
+    public VideoDTO(Video video) {
+        this.id = video.getId();
+        this.width = video.getWidth();
+        this.height = video.getHeight();
+        this.duration = video.getDuration();
+        this.title = video.getTitle();
+        this.user = video.getUserName();
+        this.description = video.getMeta().getDescription();
+        this.categories = video.getMeta().getCategories();
+        this.tags = video.getMeta().getTags();
+        this.videoPath = video.getVideoPath();
+        this.imagePath = video.getImagePath();
     }
 
     public VideoDTO() {

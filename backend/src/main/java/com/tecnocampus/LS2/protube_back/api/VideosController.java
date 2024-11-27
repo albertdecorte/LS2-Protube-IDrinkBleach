@@ -45,44 +45,57 @@ public class VideosController {
         return ResponseEntity.ok(videos);  // Devolver los videos
 
     }
+
     @GetMapping("/comments/{author}")
     public ResponseEntity<List<VideoDTO>> getVideosWithCommentsByAuthor(@PathVariable String author) {
         List<VideoDTO> videosWithComments = videoService.getVideosWithCommentsByAuthor(author);
         return ResponseEntity.ok(videosWithComments);
     }
+
     @GetMapping("/comments/all")
     public ResponseEntity<List<VideoDTO.CommentDTO>> getAllCommentsFromVideos() {
         List<VideoDTO.CommentDTO> allComments = videoService.getAllCommentsFromVideos();
         return ResponseEntity.ok(allComments);
     }
+
     @GetMapping("/{videoId}/comments")
     public ResponseEntity<List<VideoDTO.CommentDTO>> getAllCommentsForVideo(@PathVariable Long videoId) {
         List<VideoDTO.CommentDTO> comments = videoService.getAllCommentsForVideo(videoId);
         return ResponseEntity.ok(comments);
     }
+
     @PostMapping("/{videoId}/comments")
     public ResponseEntity<Comment> addCommentToVideo(
             @PathVariable Long videoId,
             @RequestBody Comment comment
     ) {
-        // Verificar si el `comment.author` està buit
         if (comment.getAuthor() == null || comment.getAuthor().isEmpty()) {
             throw new RuntimeException("Cal passar un autor al comentari.");
         }
 
-        // Guardar comentari al vídeo
         Comment savedComment = videoService.addCommentToVideo(videoId, comment);
         return new ResponseEntity<>(savedComment, HttpStatus.CREATED);
     }
+
     @GetMapping("/comments/authors")
     public ResponseEntity<Set<String>> getAllAuthors() {
         Set<String> authors = videoService.getAllAuthors();
         return ResponseEntity.ok(authors);
     }
+
     @GetMapping("/comments/author/{author}")
     public ResponseEntity<List<VideoDTO.CommentDTO>> getAllCommentsByAuthor(@PathVariable String author) {
         List<VideoDTO.CommentDTO> comments = videoService.getAllCommentsByAuthor(author);
         return ResponseEntity.ok(comments);
+    }
+
+    @GetMapping("/author/{author}/videos")
+    public ResponseEntity<List<VideoDTO>> getAllVideosByAuthor(@PathVariable String author) {
+        List<VideoDTO> videos = videoService.getAllVideosByAuthor(author);
+        if (videos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(videos);
     }
 
     @PostMapping("/upload")
