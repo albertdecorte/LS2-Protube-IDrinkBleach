@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.css';
 import { Auth0Provider, useAuth0 } from '@auth0/auth0-react';
 import Finallogo from './assets/Finallogo.svg';
@@ -8,10 +9,11 @@ import LoginButton from './assets/LoginButton.svg';
 import axios from 'axios'; // Necessites afegir axios per fer peticions HTTP
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import AuthorsOfComments from "./AuthorsOfComments";
+import AuthorsOfVideos from "./AuthorsOfVideos"; // Make sure this import is correct
 import CommentsByAuthor from "./CommentsByAuthor";
 import VideoUpload from './VideoUpload'; // Import the VideoUpload component
 import UploadButton from './VideoUploadButton'; // Import the UploadButton component
-
+import Popup from './Popup'; // Import the Popup component
 
 const domain = 'dev-r7hj507hsi3jn34i.us.auth0.com';
 const clientId = 'g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ';
@@ -91,23 +93,36 @@ const AuthButtons = () => {
 
 const AuthorButton = () => {
     const navigate = useNavigate();
+    const [isPopupOpen, setIsPopupOpen] = React.useState(false);
+
+    const openPopup = () => setIsPopupOpen(true);
+    const closePopup = () => setIsPopupOpen(false);
+    const navigateTo = (path: string) => {
+        closePopup();
+        navigate(path);
+    };
 
     return (
-        <button
-            className= "Author-Button"
-            onClick={() => navigate('/author')}style={{
-            flex: 2,
-            alignItems : "center",
-            backgroundColor: 'transparent',
-            border: 'none',
-            color: 'white',
-            fontSize: '1rem',
-            cursor: 'pointer',
-            padding: '1rem',
-            borderRadius: '4px',
-        }}>
-            <img src={IchigoAuthors} className="ichigo-icon" alt="logo" />
-        </button>
+        <>
+            <button
+                className="Author-Button"
+                onClick={openPopup}
+                style={{
+                    flex: 2,
+                    alignItems: "center",
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    color: 'white',
+                    fontSize: '1rem',
+                    cursor: 'pointer',
+                    padding: '1rem',
+                    borderRadius: '4px',
+                }}
+            >
+                <img src={IchigoAuthors} className="ichigo-icon" alt="logo" />
+            </button>
+            <Popup isOpen={isPopupOpen} onClose={closePopup} onNavigate={navigateTo} />
+        </>
     );
 };
 
@@ -145,6 +160,8 @@ function App() {
                         <Route path="/author" element={<AuthorsOfComments />} /> {/* Updated route to /author */}
                         <Route path="/comments/:author" element={<CommentsByAuthor />} />
                         <Route path="/upload" element={<VideoUpload />} /> {/* New route for video upload */}
+                        <Route path="/videos/author/:author" element={<AuthorsOfVideos />} /> {/* New route for videos by author */}
+                        <Route path="/authors-of-videos" element={<AuthorsOfVideos />} /> {/* New route for the authors button */}
                     </Routes>
                 </div>
             </Router>

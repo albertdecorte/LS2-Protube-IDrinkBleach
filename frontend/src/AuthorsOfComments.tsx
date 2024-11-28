@@ -13,7 +13,7 @@ const AuthorButtons: React.FC = () => {
     useEffect(() => {
         const fetchAuthors = async () => {
             try {
-                const response = await fetch('http://localhost:8080/api/videos/videos/authors');
+                const response = await fetch('http://localhost:8080/api/videos/comments/authors');
                 if (!response.ok) {
                     throw new Error('Failed to fetch authors');
                 }
