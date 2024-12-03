@@ -15,7 +15,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose, onNavigate }) => {
             <div className="popup-content" onClick={(e) => e.stopPropagation()}>
                 <h2>Navigate to:</h2>
                 <button onClick={() => onNavigate('/author')}>Author</button>
-                <button onClick={() => onNavigate('/')}>Videos by Author</button>
+                <button onClick={() => onNavigate('/authors-of-videos')}>Videos by Author</button>
                 <button onClick={onClose}>Close</button>
             </div>
         </div>
