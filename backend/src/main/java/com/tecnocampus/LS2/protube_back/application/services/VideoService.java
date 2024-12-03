@@ -134,12 +134,6 @@ public class VideoService {
                 .collect(Collectors.toList());
     }
 
-    public List<VideoDTO> getAllVideosByAuthor(String author) {
-        return videoRepository.findAll().stream()
-                .filter(video -> video.getUserName() != null && video.getUserName().equalsIgnoreCase(author))
-                .map(this::convertToDTO) // Convert each video to VideoDTO
-                .collect(Collectors.toList());
-    }
 
     public Video addVideo(VideoDTO videoDTO) {
         Video video = new Video();
@@ -165,5 +159,18 @@ public class VideoService {
                 .filter(video -> video.getUserName() != null)
                 .map(Video::getUserName)
                 .collect(Collectors.toSet());
+    }
+
+    public List<VideoDTO> findVideosByAuthor(String author) {
+        List<VideoDTO> videos = videoRepository.findAll().stream()
+                .filter(video -> video.getUserName() != null && video.getUserName().equalsIgnoreCase(author))
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+        if (videos.isEmpty()) {
+            throw new IllegalArgumentException("No videos found for author: " + author);
+        }
+
+        return videos;
     }
 }

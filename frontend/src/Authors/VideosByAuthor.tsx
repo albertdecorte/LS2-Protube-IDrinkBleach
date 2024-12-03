@@ -7,8 +7,9 @@ import './VideosByAuthor.css'; // Import your CSS
 interface VideoDTO {
     id: number;
     title: string;
-    imagePath: string; // Video thumbnail
-    user: string;      // Author of the video
+    imagePath?: string;    // Optional thumbnail path
+    thumbnail?: string;    // Optional thumbnail (for flexibility)
+    user: string;
 }
 
 const VideosByAuthor: React.FC = () => {
@@ -23,7 +24,7 @@ const VideosByAuthor: React.FC = () => {
         // Fetch all videos by a specific author
         const fetchVideosByAuthor = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/api/videos/comments/author/${author}/videos`);
+                const response = await fetch(`http://localhost:8080/api/videos/author/${author}/videos`);
                 const contentType = response.headers.get('content-type');
 
                 if (!response.ok) {

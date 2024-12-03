@@ -8,12 +8,13 @@ import VideoPlayer from './VideoPlayer';
 import LoginButton from './assets/LoginButton.svg';
 import axios from 'axios'; // Necessites afegir axios per fer peticions HTTP
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
-import AuthorsOfComments from "./AuthorsOfComments";
-import AuthorsOfVideos from "./AuthorsOfVideos"; // Make sure this import is correct
-import CommentsByAuthor from "./CommentsByAuthor";
+import AuthorsOfComments from "./Authors/AuthorsOfComments";
+import AuthorsOfVideos from "./Authors/AuthorsOfVideos"; // Make sure this import is correct
+import CommentsByAuthor from "./Authors/CommentsByAuthor";
 import VideoUpload from './VideoUpload'; // Import the VideoUpload component
 import UploadButton from './VideoUploadButton'; // Import the UploadButton component
 import Popup from './Popup'; // Import the Popup component
+import VideosByAuthor from './Authors/VideosByAuthor';
 
 const domain = 'dev-r7hj507hsi3jn34i.us.auth0.com';
 const clientId = 'g84SYUoiDvFIGevVYEBH5AcB4xaoHUFZ';
@@ -160,7 +161,7 @@ function App() {
                         <Route path="/author" element={<AuthorsOfComments />} /> {/* Updated route to /author */}
                         <Route path="/comments/:author" element={<CommentsByAuthor />} />
                         <Route path="/upload" element={<VideoUpload />} /> {/* New route for video upload */}
-                        <Route path="/videos/author/:author" element={<AuthorsOfVideos />} /> {/* New route for videos by author */}
+                        <Route path="/videos/author/:author" element={<VideosByAuthor />} /> {/* New route for videos by author */}
                         <Route path="/authors-of-videos" element={<AuthorsOfVideos />} /> {/* New route for the authors button */}
                     </Routes>
                 </div>

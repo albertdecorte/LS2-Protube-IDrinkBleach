@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './VideosSection.css'; // Assuming you have a CSS file for styling
+//import "/frontend/src/Authors/VideoSection.css" // Assuming you have a CSS file for styling
 
 interface VideoDTO {
     id: number;

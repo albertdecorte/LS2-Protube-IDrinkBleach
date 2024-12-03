@@ -98,11 +98,12 @@ public class VideosController {
 
     @GetMapping("/author/{author}/videos")
     public ResponseEntity<List<VideoDTO>> getAllVideosByAuthor(@PathVariable String author) {
-        List<VideoDTO> videos = videoService.getAllVideosByAuthor(author);
-        if (videos.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            List<VideoDTO> videos = videoService.findVideosByAuthor(author);
+            return ResponseEntity.ok(videos);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-        return ResponseEntity.ok(videos);
     }
 
     @PostMapping("/upload")
