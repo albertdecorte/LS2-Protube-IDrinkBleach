@@ -1,13 +1,20 @@
 package com.tecnocampus.LS2.protube_back.application.services;
 
+import ch.qos.logback.classic.tyler.TylerConfiguratorBase;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.domain.Comment;
 import com.tecnocampus.LS2.protube_back.domain.Meta;
 import com.tecnocampus.LS2.protube_back.domain.Video;
 import com.tecnocampus.LS2.protube_back.persistance.VideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -17,10 +24,14 @@ import java.util.stream.Collectors;
 @Service
 public class VideoService {
     private final VideoRepository videoRepository;
-
+    private final Environment env;
+    private final Path rootPath;
     @Autowired
-    public VideoService(VideoRepository videoRepository) {
+    public VideoService(VideoRepository videoRepository,Environment env) {
         this.videoRepository = videoRepository;
+        this.env = env;
+        final var rootDir = env.getProperty("pro_tube.store.dir");
+        this.rootPath = Paths.get(rootDir);
     }
 
     public void saveVideo(Video video) {
@@ -173,4 +184,50 @@ public class VideoService {
 
         return videos;
     }
+    public Video addVideoWithFile(MultipartFile videoFile, MultipartFile thumbnailFile, String title, String description,
+                                  List<String> categories, List<String> tags, String user) throws IOException {
+
+        // Obtenir l'últim ID de la base de dades
+        Long nextId = videoRepository.findTopByOrderByIdDesc()
+                .map(Video::getId)
+                .map(id -> id + 1) // Incrementar l'últim ID
+                .orElse(1L); // Si no hi ha vídeos, comença amb 1
+
+        // Crear un nou objecte Video
+        Video video = new Video();
+        video.setId(nextId); // Assignar ID
+        video.setTitle(title);
+        video.setUserName(user);
+
+        // Desa el vídeo al directori principal
+        File videoTargetFile = new File(rootPath.toFile(), nextId + "_" + videoFile.getOriginalFilename());
+        videoFile.transferTo(videoTargetFile);
+
+        // Assignar l'URL del vídeo
+        String videoUrl = "http://localhost:8080/media/" + nextId + "_" + videoFile.getOriginalFilename();
+        video.setVideoPath(videoUrl);
+
+        // Desa el thumbnail si existeix
+        if (thumbnailFile != null) {
+            File thumbnailTargetFile = new File(rootPath.toFile(), nextId + "_thumbnail_" + thumbnailFile.getOriginalFilename());
+            thumbnailFile.transferTo(thumbnailTargetFile);
+
+            // Assignar l'URL del thumbnail
+            String thumbnailUrl = "http://localhost:8080/media/" + nextId + "_thumbnail_" + thumbnailFile.getOriginalFilename();
+            video.setImagePath(thumbnailUrl);
+        }
+
+        // Assignar metadades
+        Meta meta = new Meta();
+        meta.setDescription(description);
+        meta.setCategories(categories != null ? categories : new ArrayList<>());
+        meta.setTags(tags != null ? tags : new ArrayList<>());
+        meta.setComments(new ArrayList<>()); // Llista buida per comentaris
+        video.setMeta(meta);
+
+        // Desa el vídeo a la base de dades
+        return videoRepository.save(video);
+    }
+
+
 }

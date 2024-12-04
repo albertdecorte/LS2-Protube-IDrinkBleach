@@ -1,5 +1,6 @@
 package com.tecnocampus.LS2.protube_back.persistance;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import com.tecnocampus.LS2.protube_back.application.DTO.VideoDTO;
 import com.tecnocampus.LS2.protube_back.domain.Video;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,5 @@ public interface VideoRepository extends JpaRepository<Video, Long> {
 
     List<Video> findByUserName(String userName);
 
+    Optional<Video> findTopByOrderByIdDesc();
 }

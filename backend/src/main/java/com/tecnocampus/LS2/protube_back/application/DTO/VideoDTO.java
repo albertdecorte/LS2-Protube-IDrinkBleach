@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Setter
@@ -59,6 +60,7 @@ public class VideoDTO {
     public VideoDTO() {
     }
 
+
     @Setter
     @Getter
     public static class CommentDTO {
@@ -89,5 +91,26 @@ public class VideoDTO {
         }
 
          */
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+
+        public Long getVideoId() {
+            return videoId;
+        }
+
+        public void setVideoId(Long videoId) {
+            this.videoId = videoId;
+        }
     }
 }

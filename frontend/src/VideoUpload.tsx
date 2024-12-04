@@ -1,107 +1,108 @@
-import React, { useState } from "react";
-import axios from "axios";
-import "./VideoUpload.css";
+import React, { useState } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
-const VideoUpload = () => {
-    // State to store form data
-    const [title, setTitle] = useState<string>("");
-    const [videoPath, setVideoPath] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [categories, setCategories] = useState<string[]>([]);
-    const [tags, setTags] = useState<string[]>([]);
-    const [isUploading, setIsUploading] = useState<boolean>(false);
-    const [errorMessage, setErrorMessage] = useState<string>("");
+const UploadVideo: React.FC = () => {
+    const { isAuthenticated, user } = useAuth0();
+    const [newTitle, setNewTitle] = useState<string>('');
+    const [videoFilePath, setVideoFilePath] = useState<File | null>(null);
+    const [thumbnailFilePath, setThumbnailFilePath] = useState<File | null>(null); // Thumbnail
+    const [videoDescription, setVideoDescription] = useState<string>('');
+    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
-    // Handle form submission
-    const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
-        setIsUploading(true);
-        setErrorMessage("");
-
-        // Prepare the data to send to the backend
-        const videoData = {
-            title,
-            videoPath,
-            description,
-            categories,
-            tags,
-        };
-
-        try {
-            const response = await axios.post("http://localhost:8080/videos/upload", videoData);
-            alert("Video uploaded successfully!");
-            console.log(response.data); // Log the saved video data
-        } catch (error) {
-            setErrorMessage("Error uploading video");
-        } finally {
-            setIsUploading(false);
+    const handleAddVideo = () => {
+        if (!isAuthenticated) {
+            alert("Has d'estar autenticat per pujar un vídeo.");
+            return;
         }
+
+        if (!videoFilePath) {
+            alert("Has de seleccionar un vídeo.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('videoFile', videoFilePath);
+        if (thumbnailFilePath) formData.append('thumbnailFile', thumbnailFilePath); // Adjuntar thumbnail si existeix
+        formData.append('title', newTitle);
+        formData.append('description', videoDescription);
+        formData.append('categories', selectedCategories.join(', '));
+        formData.append('tags', selectedTags.join(', '));
+        formData.append('user', user?.name || "Usuari desconegut");
+
+        fetch('http://localhost:8080/api/videos/upload', {
+            method: 'POST',
+            body: formData,
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Error en pujar el vídeo');
+                return response.json();
+            })
+            .then(data => {
+                console.log('Vídeo pujat correctament:', data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
     };
 
     return (
-        <div className="video-upload-container">
-            <h2>Upload a New Video</h2>
-
-            {errorMessage && <div className="error-message">{errorMessage}</div>}
-
-            <form onSubmit={handleSubmit} className="video-upload-form">
-                <div className="form-group">
-                    <label htmlFor="title">Title</label>
+        <div>
+            <h1>Pujo un Vídeo</h1>
+            <form onSubmit={(e) => { e.preventDefault(); handleAddVideo(); }}>
+                <div>
+                    <label>Títol:</label>
                     <input
                         type="text"
-                        id="title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={newTitle}
+                        onChange={(e) => setNewTitle(e.target.value)}
                         required
                     />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="videoPath">Video File Path</label>
-                    <input
-                        type="text"
-                        id="videoPath"
-                        value={videoPath}
-                        onChange={(e) => setVideoPath(e.target.value)}
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="description">Description (Optional)</label>
+                <div>
+                    <label>Descripció:</label>
                     <textarea
-                        id="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    ></textarea>
-                </div>
-
-                <div className="form-group">
-                    <label htmlFor="categories">Categories (Optional, comma separated)</label>
-                    <input
-                        type="text"
-                        id="categories"
-                        value={categories.join(", ")}
-                        onChange={(e) => setCategories(e.target.value.split(",").map((item) => item.trim()))}
+                        value={videoDescription}
+                        onChange={(e) => setVideoDescription(e.target.value)}
+                        required
                     />
                 </div>
-
-                <div className="form-group">
-                    <label htmlFor="tags">Tags (Optional, comma separated)</label>
+                <div>
+                    <label>Categories:</label>
                     <input
                         type="text"
-                        id="tags"
-                        value={tags.join(", ")}
-                        onChange={(e) => setTags(e.target.value.split(",").map((item) => item.trim()))}
+                        value={selectedCategories.join(', ')}
+                        onChange={(e) => setSelectedCategories(e.target.value.split(',').map(item => item.trim()))}
                     />
                 </div>
-
-                <button type="submit" disabled={isUploading}>
-                    {isUploading ? "Uploading..." : "Upload Video"}
-                </button>
+                <div>
+                    <label>Etiquetes:</label>
+                    <input
+                        type="text"
+                        value={selectedTags.join(', ')}
+                        onChange={(e) => setSelectedTags(e.target.value.split(',').map(item => item.trim()))}
+                    />
+                </div>
+                <div>
+                    <label>Selecciona el vídeo:</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setVideoFilePath(e.target.files ? e.target.files[0] : null)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label>Selecciona el thumbnail (opcional):</label>
+                    <input
+                        type="file"
+                        onChange={(e) => setThumbnailFilePath(e.target.files ? e.target.files[0] : null)}
+                    />
+                </div>
+                <button type="submit">Pujar Vídeo</button>
             </form>
         </div>
     );
 };
 
-export default VideoUpload;
+
+export default UploadVideo;

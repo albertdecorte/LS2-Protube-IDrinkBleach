@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
 import java.util.Set;
@@ -108,16 +110,21 @@ public class VideosController {
 
     @PostMapping("/upload")
     public ResponseEntity<Video> uploadVideo(
-            @RequestBody VideoDTO videoDTO, // JSON payload with video details
-            Principal principal
-    ) {
-        if (videoDTO.getVideoPath() == null || videoDTO.getVideoPath().isEmpty() ||
-                videoDTO.getTitle() == null || videoDTO.getTitle().isEmpty()) {
+            @RequestParam("videoFile") MultipartFile videoFile,
+            @RequestParam(value = "thumbnailFile", required = false) MultipartFile thumbnailFile,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam("categories") List<String> categories,
+            @RequestParam("tags") List<String> tags,
+            @RequestParam("user") String user) throws IOException {
+
+        if (title == null || title.isEmpty() || user == null || user.isEmpty()) {
             return ResponseEntity.badRequest().body(null);
         }
 
-        videoDTO.setUser(principal.getName());
-        Video savedVideo = videoService.addVideo(videoDTO);
+        Video savedVideo = videoService.addVideoWithFile(videoFile, thumbnailFile, title, description, categories, tags, user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(savedVideo);
     }
+
 }
