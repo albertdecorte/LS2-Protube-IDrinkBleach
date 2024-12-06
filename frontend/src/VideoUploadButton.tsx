@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import './VideoUploadButton.css';
-import React from "react"; // Import the CSS file
 import IchigoFinal from "./assets/Ichigo_final_Upload-ezgif.com-gif-maker.svg";
 
 const UploadButton = () => {

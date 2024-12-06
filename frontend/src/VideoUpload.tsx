@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import './VideoUpload.css';
 
@@ -11,6 +11,7 @@ const UploadVideo: React.FC = () => {
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [buttonText, setButtonText] = useState<string>('Pujar Vídeo'); // State for button text
+    const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
     const handleAddVideo = () => {
         if (!isAuthenticated) {
@@ -48,6 +49,19 @@ const UploadVideo: React.FC = () => {
                 console.error('Error:', error);
             });
     };
+
+    useEffect(() => {
+        // Validate the form whenever any input changes
+        const validateForm = () => {
+            if (newTitle && videoFilePath && videoDescription) {
+                setIsFormValid(true);
+            } else {
+                setIsFormValid(false);
+            }
+        };
+
+        validateForm();
+    }, [newTitle, videoFilePath, videoDescription]);
 
     return (
         <div className="video-upload-container">
@@ -89,6 +103,7 @@ const UploadVideo: React.FC = () => {
                 <div className="form-group">
                     <label>Selecciona el vídeo:</label>
                     <input
+                        style={{color:"white"}}
                         type="file"
                         onChange={(e) => setVideoFilePath(e.target.files ? e.target.files[0] : null)}
                         required
@@ -97,12 +112,14 @@ const UploadVideo: React.FC = () => {
                 <div className="form-group">
                     <label>Selecciona el thumbnail (opcional):</label>
                     <input
+                        style={{color:"white"}}
                         type="file"
                         onChange={(e) => setThumbnailFilePath(e.target.files ? e.target.files[0] : null)}
                     />
                 </div>
-                <button type="submit"
-                        onClick={() => window.location.href = 'http://localhost:5173'}>{buttonText}</button>
+                <button
+                    disabled={!isFormValid}
+                    type="submit"onClick={() => window.location.href = 'http://localhost:5173'}>{buttonText}</button>
             </form>
         </div>
     );
