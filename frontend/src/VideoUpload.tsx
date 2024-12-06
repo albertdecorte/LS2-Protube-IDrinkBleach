@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import './VideoUpload.css';
 
 const UploadVideo: React.FC = () => {
     const { isAuthenticated, user } = useAuth0();
@@ -47,10 +48,10 @@ const UploadVideo: React.FC = () => {
     };
 
     return (
-        <div>
-            <h1>Pujo un Vídeo</h1>
-            <form onSubmit={(e) => { e.preventDefault(); handleAddVideo(); }}>
-                <div>
+        <div className="video-upload-container">
+            <h2 style={{ color: '#ffffff' }}>Video Upload</h2>
+            <form className="video-upload-form" onSubmit={(e) => { e.preventDefault(); handleAddVideo(); }}>
+                <div className="form-group">
                     <label>Títol:</label>
                     <input
                         type="text"
@@ -59,7 +60,7 @@ const UploadVideo: React.FC = () => {
                         required
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label>Descripció:</label>
                     <textarea
                         value={videoDescription}
@@ -67,7 +68,7 @@ const UploadVideo: React.FC = () => {
                         required
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label>Categories:</label>
                     <input
                         type="text"
@@ -75,7 +76,7 @@ const UploadVideo: React.FC = () => {
                         onChange={(e) => setSelectedCategories(e.target.value.split(',').map(item => item.trim()))}
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label>Etiquetes:</label>
                     <input
                         type="text"
@@ -83,17 +84,19 @@ const UploadVideo: React.FC = () => {
                         onChange={(e) => setSelectedTags(e.target.value.split(',').map(item => item.trim()))}
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label>Selecciona el vídeo:</label>
                     <input
+                        style={{ color: '#807e7e' }}
                         type="file"
                         onChange={(e) => setVideoFilePath(e.target.files ? e.target.files[0] : null)}
                         required
                     />
                 </div>
-                <div>
+                <div className="form-group">
                     <label>Selecciona el thumbnail (opcional):</label>
                     <input
+                        style={{ color: '#807e7e' }}
                         type="file"
                         onChange={(e) => setThumbnailFilePath(e.target.files ? e.target.files[0] : null)}
                     />
@@ -103,6 +106,5 @@ const UploadVideo: React.FC = () => {
         </div>
     );
 };
-
 
 export default UploadVideo;
