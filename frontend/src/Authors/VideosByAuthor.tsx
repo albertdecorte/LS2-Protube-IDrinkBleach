@@ -61,7 +61,7 @@ const VideosByAuthor: React.FC = () => {
 
     return (
         <div className="videos-by-author">
-            <h1>Videos by {author}</h1>
+            <h1 style={{color:"white"}}>Videos by {author}</h1>
             <VideosSection videos={videos} />
         </div>
     );

@@ -10,6 +10,7 @@ const UploadVideo: React.FC = () => {
     const [videoDescription, setVideoDescription] = useState<string>('');
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
+    const [buttonText, setButtonText] = useState<string>('Pujar Vídeo'); // State for button text
 
     const handleAddVideo = () => {
         if (!isAuthenticated) {
@@ -41,6 +42,7 @@ const UploadVideo: React.FC = () => {
             })
             .then(data => {
                 console.log('Vídeo pujat correctament:', data);
+                setButtonText('Video Uploaded'); // Change button text on success
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -87,7 +89,6 @@ const UploadVideo: React.FC = () => {
                 <div className="form-group">
                     <label>Selecciona el vídeo:</label>
                     <input
-                        style={{ color: '#807e7e' }}
                         type="file"
                         onChange={(e) => setVideoFilePath(e.target.files ? e.target.files[0] : null)}
                         required
@@ -96,12 +97,11 @@ const UploadVideo: React.FC = () => {
                 <div className="form-group">
                     <label>Selecciona el thumbnail (opcional):</label>
                     <input
-                        style={{ color: '#807e7e' }}
                         type="file"
                         onChange={(e) => setThumbnailFilePath(e.target.files ? e.target.files[0] : null)}
                     />
                 </div>
-                <button type="submit">Pujar Vídeo</button>
+                <button type="submit"
             </form>
         </div>
     );
