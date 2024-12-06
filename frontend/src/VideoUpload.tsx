@@ -102,6 +102,7 @@ const UploadVideo: React.FC = () => {
                     />
                 </div>
                 <button type="submit"
+                        onClick={() => window.location.href = 'http://localhost:5173'}>{buttonText}</button>
             </form>
         </div>
     );
