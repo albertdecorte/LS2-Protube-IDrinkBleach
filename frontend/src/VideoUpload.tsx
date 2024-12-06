@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
+import { useNavigate } from 'react-router-dom';
 import './VideoUpload.css';
-
-const UploadVideo: React.FC = () => {
+const VideoUpload: React.FC = () => {
     const { isAuthenticated, user } = useAuth0();
+    const navigate = useNavigate();
     const [newTitle, setNewTitle] = useState<string>('');
     const [videoFilePath, setVideoFilePath] = useState<File | null>(null);
-    const [thumbnailFilePath, setThumbnailFilePath] = useState<File | null>(null); // Thumbnail
+    const [thumbnailFilePath, setThumbnailFilePath] = useState<File | null>(null);
     const [videoDescription, setVideoDescription] = useState<string>('');
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
-    const [buttonText, setButtonText] = useState<string>('Pujar Vídeo'); // State for button text
-    const [isFormValid, setIsFormValid] = useState<boolean>(false);
 
     const handleAddVideo = () => {
         if (!isAuthenticated) {
@@ -26,7 +25,7 @@ const UploadVideo: React.FC = () => {
 
         const formData = new FormData();
         formData.append('videoFile', videoFilePath);
-        if (thumbnailFilePath) formData.append('thumbnailFile', thumbnailFilePath); // Adjuntar thumbnail si existeix
+        if (thumbnailFilePath) formData.append('thumbnailFile', thumbnailFilePath);
         formData.append('title', newTitle);
         formData.append('description', videoDescription);
         formData.append('categories', selectedCategories.join(', '));
@@ -43,32 +42,19 @@ const UploadVideo: React.FC = () => {
             })
             .then(data => {
                 console.log('Vídeo pujat correctament:', data);
-                setButtonText('Video Uploaded'); // Change button text on success
+                navigate('/'); // Redirigeix a la pàgina d'inici després de pujar el vídeo
             })
             .catch(error => {
                 console.error('Error:', error);
             });
     };
 
-    useEffect(() => {
-        // Validate the form whenever any input changes
-        const validateForm = () => {
-            if (newTitle && videoFilePath && videoDescription) {
-                setIsFormValid(true);
-            } else {
-                setIsFormValid(false);
-            }
-        };
-
-        validateForm();
-    }, [newTitle, videoFilePath, videoDescription]);
-
     return (
-        <div className="video-upload-container">
-            <h2 style={{ color: '#ffffff' }}>Video Upload</h2>
-            <form className="video-upload-form" onSubmit={(e) => { e.preventDefault(); handleAddVideo(); }}>
-                <div className="form-group">
-                    <label>Títol:</label>
+        <div>
+            <h1 style={{color:"white"}}>Upload video</h1>
+            <form onSubmit={(e) => { e.preventDefault(); handleAddVideo(); }}>
+                <div>
+                    <label>Title:</label>
                     <input
                         type="text"
                         value={newTitle}
@@ -76,15 +62,15 @@ const UploadVideo: React.FC = () => {
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label>Descripció:</label>
+                <div>
+                    <label>Description:</label>
                     <textarea
                         value={videoDescription}
                         onChange={(e) => setVideoDescription(e.target.value)}
                         required
                     />
                 </div>
-                <div className="form-group">
+                <div>
                     <label>Categories:</label>
                     <input
                         type="text"
@@ -92,16 +78,16 @@ const UploadVideo: React.FC = () => {
                         onChange={(e) => setSelectedCategories(e.target.value.split(',').map(item => item.trim()))}
                     />
                 </div>
-                <div className="form-group">
-                    <label>Etiquetes:</label>
+                <div>
+                    <label>Tags:</label>
                     <input
                         type="text"
                         value={selectedTags.join(', ')}
                         onChange={(e) => setSelectedTags(e.target.value.split(',').map(item => item.trim()))}
                     />
                 </div>
-                <div className="form-group">
-                    <label>Selecciona el vídeo:</label>
+                <div>
+                    <label>Select video:</label>
                     <input
                         style={{color:"white"}}
                         type="file"
@@ -109,20 +95,18 @@ const UploadVideo: React.FC = () => {
                         required
                     />
                 </div>
-                <div className="form-group">
-                    <label>Selecciona el thumbnail (opcional):</label>
+                <div>
+                    <label>Select thumbnail (optional):</label>
                     <input
                         style={{color:"white"}}
                         type="file"
                         onChange={(e) => setThumbnailFilePath(e.target.files ? e.target.files[0] : null)}
                     />
                 </div>
-                <button
-                    disabled={!isFormValid}
-                    type="submit"onClick={() => window.location.href = 'http://localhost:5173'}>{buttonText}</button>
+                <button type="submit">Upload video</button>
             </form>
         </div>
     );
 };
 
-export default UploadVideo;
+export default VideoUpload;
